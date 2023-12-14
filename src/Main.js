@@ -13,6 +13,7 @@ import { isUserLoggedIn } from './redux/slices/authSlice'
 
 const Stack = createNativeStackNavigator();
 
+// SCREEN OPTIONS OBJECT
 const screenOptions = {
   title: 'My home',
   headerStyle: { backgroundColor: '#f4511e' },
