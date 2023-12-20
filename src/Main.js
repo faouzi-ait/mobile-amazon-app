@@ -1,5 +1,4 @@
 import React from 'react'
-import { Platform } from 'react-native';
 import Button from 'react-native-button';
 
 import { useSelector } from 'react-redux';
@@ -16,6 +15,7 @@ const Stack = createNativeStackNavigator();
 // SCREEN OPTIONS OBJECT
 const screenOptions = {
   title: 'My home',
+  headerShown: false,
   headerStyle: { backgroundColor: '#f4511e' },
   headerTitleAlign: 'center',
   headerTintColor: '#fff',
@@ -38,15 +38,14 @@ const Main = () => {
   const auth = useSelector(isUserLoggedIn);
 
   return (
-
     <NavigationContainer>
         <Stack.Navigator initialRouteName={Home} screenOptions={screenOptions}>
             <Stack.Screen name="Home" component={Home} />
             {!auth && <Stack.Screen name="Login" component={Login} options={{ title: 'Login', headerShown: false }} />}
-            <Stack.Screen name="Registration" component={Registration} options={{ title: 'Registration', headerShown: true }} />
-            {auth && <Stack.Screen name="Listing" component={Listing} options={{ title: 'Listing', headerShown: true }} />}
-            {auth && <Stack.Screen name="Album" component={Album} options={{ title: 'Album', headerShown: true }} />}
-            {auth && <Stack.Screen name="Camera" component={CameraCmp} options={{ title: 'Camera', headerShown: true }} />}
+            <Stack.Screen name="Registration" component={Registration} options={{ title: 'Registration', headerShown: false }} />
+            {auth && <Stack.Screen name="Listing" component={Listing} options={{ title: 'Listing', headerShown: false }} />}
+            {auth && <Stack.Screen name="Album" component={Album} options={{ title: 'Album', headerShown: false }} />}
+            {auth && <Stack.Screen name="Camera" component={CameraCmp} options={{ title: 'Camera', headerShown: false }} />}
         </Stack.Navigator>
     </NavigationContainer>
   )

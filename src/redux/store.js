@@ -7,12 +7,14 @@ import { apiMemo } from './apiServices/memoApi';
 import { apiSlice } from './apiBaseService/baseApiQuery';
 import { uploadApi } from './apiServices/uploadApi';
 
+import themeReducer from './slices/themeSlice';
 import counterReducer from './slices/counterSlice';
 import authReducer from './slices/authSlice';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   counter: counterReducer,
+  theme: themeReducer,
   [apiMemo.reducerPath]: apiMemo.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
   // [uploadApi.reducerPath]: uploadApi.reducer,

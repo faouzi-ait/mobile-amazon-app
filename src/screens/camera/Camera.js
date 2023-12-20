@@ -47,13 +47,13 @@ export const CameraCmp = () => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-        <Camera style={{ borderWidth: 1, flex: 1 }} ref={cameraRef}>
+    <SafeAreaView style={{ flex: 1 }}>
+        <Camera style={{flex: 1 }} ref={cameraRef}>
             <View style={styles.buttonContainer}>
                 <Button title="Take Pic" onPress={takePicture} />
             </View>
         </Camera>
-    </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from '@react-navigation/native';
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
 
 import { useGetMemosQuery } from '../../redux/apiServices/memoApi'
 
@@ -8,7 +8,7 @@ export const Listing = () => {
   const { data } = useGetMemosQuery();
 
   return (
-    <View>
+    <SafeAreaView>
         <Text>Login</Text>
         {data?.map(item => 
           <View key={item.title}>
@@ -17,7 +17,7 @@ export const Listing = () => {
           </View>
         )}
       <TouchableOpacity><Link to={'/Home'}>Home</Link></TouchableOpacity>
-    </View>
+    </SafeAreaView>
   )
 }
 

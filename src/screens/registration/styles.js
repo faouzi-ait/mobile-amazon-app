@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
     },
     upload: {
       width: '88%',
-      // marginRight: 15,
       marginLeft: 0,
       marginTop: 10,
       padding: 20,
@@ -51,5 +50,9 @@ export const styles = StyleSheet.create({
     preview: {
       alignSelf: 'stretch',
       flex: 1,
+    },
+    lottie: {
+      width: 100,
+      height: 100,
     },
   });

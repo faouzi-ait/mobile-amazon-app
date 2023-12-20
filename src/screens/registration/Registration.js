@@ -1,18 +1,28 @@
-import { View, TextInput, Button, Image, ScrollView, Keyboard } from 'react-native';
+import { View, TextInput, Button, Image, Text, ScrollView, Keyboard } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { useCreateUserMutation } from '../../redux/apiServices/authApi'
+
+import { ThemeProvider, ToggleThemeButton } from '../../components'; 
+import { selectedTheme } from '../../redux/slices/selectors';
+import { lightStyles, darkStyles } from '../../utils'
+
+import AnimatedLoader from 'react-native-animated-loader';
 
 import { styles } from './styles'
 
 export const register = ['firstname', 'lastname', 'phone', 'username', 'password'];
 
 export const Registration = ({ navigation }) => {
-  const [createUser] = useCreateUserMutation();
-
-  const [image, setImage] = useState(null);
+  const [createUser, { data, error, isLoading }] = useCreateUserMutation();
   const [formData, setFormData] = useState({});
+  const [image, setImage] = useState(null);
+  const theme = useSelector(selectedTheme);
+
+  const inputStyle = theme === 'dark' ? darkStyles : lightStyles;
+  const placeholderStyle = theme === 'dark' ? '#fff' : '#000';
 
   const handleChange = (fieldName, value) => {
     setFormData((prevData) => ({
@@ -23,7 +33,7 @@ export const Registration = ({ navigation }) => {
   const handleChoosePhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      // allowsEditing: true,
+      allowsEditing: true,
       allowsMultipleSelection: false,
       selectionLimit: 4,
       aspect: [4, 3],
@@ -41,61 +51,83 @@ export const Registration = ({ navigation }) => {
   const handleRegistration = async () => {
     const body = new FormData();
     const { firstname, lastname, phone, username, password } = formData;
-
-    if(!username || !password) return false; // Quick validation to avoid app
-
+    
+    // if(!username || !password) return false; // Quick validation to avoid app
+    
     try {
       body.append('firstname', firstname);
       body.append('lastname', lastname);
       body.append('phone', phone);
       body.append('username', username);
       body.append('password', password);
-      body.append('image', {
-        uri: image,
-        type: 'image/jpeg',
-        name: 'photo.jpg',
-      });
-
+      
+      if(image) {
+        body.append('image', {
+          uri: image,
+          type: 'image/jpeg',
+          name: 'photo.jpg',
+        });
+      }
+      
       await createUser(body).unwrap();
       navigation.navigate('Home');
     } catch (error) {
       console.log(error);
     }
   };
+  
+  if(isLoading) {
+    return (
+      <View style={styles.container}>
+        <AnimatedLoader
+          visible={true}
+          overlayColor="rgba(255,255,255,0.75)"
+          animationStyle={styles.lottie}
+          speed={1}>
+            {/* <Text style={{ margin: 5 }}>Logging you in....</Text> */}
+        </AnimatedLoader>
+      </View>
+    )}
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        {register.map((fieldName, i) => (
-          <TextInput
-            key={i}
-            style={styles.input}
-            placeholder={fieldName}
-            onChangeText={(text) => handleChange(fieldName, text)}
-          />
-        ))}
-
-        <Button title={`${image ? 'Add a different Image' : 'Add your profile image'}`} onPress={handleChoosePhoto} />
-        
-        {image && 
-          <View>
-            <Button title="Remove Image" onPress={() => setImage(null)} />
-            <Image
-              source={{ uri: image }}
-              style={{ width: 250, height: 225, marginTop: 5 }}
-              onPress={Keyboard.dismiss}
+    <ThemeProvider>
+      <ScrollView>
+        <View style={styles.container}>
+          {register.map((fieldName, i) => (
+            <TextInput
+              key={i}
+              placeholderTextColor={placeholderStyle}
+              style={[styles.input, inputStyle]}
+              placeholder={fieldName}
+              onChangeText={(text) => handleChange(fieldName, text)}
             />
+          ))}
+
+          <Text style={{ textAlign: 'center' }}>{error?.data?.error}</Text>
+          <Button title={`${image ? 'Add a different Image' : 'Add your profile image'}`} onPress={handleChoosePhoto} />
+          
+          {image && 
+            <View>
+              <Button title="Remove Image" onPress={() => setImage(null)} />
+              <Image
+                source={{ uri: image }}
+                style={{ width: 250, height: 225, marginTop: 5 }}
+                onPress={Keyboard.dismiss}
+              />
+            </View>
+          }
+
+
+          <Button title="Register" onPress={handleRegistration} />
+
+          <View style={styles.btnContainer}>
+            <Button title="Go to Login" onPress={() => navigation.navigate('Login')} />
+            <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
           </View>
-        }
-
-        <Button title="Register" onPress={handleRegistration} />
-
-        <View style={styles.btnContainer}>
-          <Button title="Go to Login" onPress={() => navigation.navigate('Login')} />
-          <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+        <ToggleThemeButton />
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </ThemeProvider>
   )
 }
 
