@@ -1,23 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setupListeners } from '@reduxjs/toolkit/query';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
 import * as PER from 'redux-persist';
 
-import { apiMemo } from './apiServices/memoApi';
-import { apiSlice } from './apiBaseService/baseApiQuery';
-import { uploadApi } from './apiServices/uploadApi';
-
-import themeReducer from './slices/themeSlice';
-import counterReducer from './slices/counterSlice';
-import authReducer from './slices/authSlice';
+import { uploadApi, apiSlice, apiMemo, apiPostListing } from './apiServices';
+import { counterReducer, themeReducer, authReducer } from './slices';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
-  counter: counterReducer,
   theme: themeReducer,
+  counter: counterReducer,
   [apiMemo.reducerPath]: apiMemo.reducer,
+  [apiPostListing.reducerPath]: apiPostListing.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
-  // [uploadApi.reducerPath]: uploadApi.reducer,
 });
 
 export const persistConfig = {
@@ -35,7 +30,7 @@ export const store = configureStore({
     serializableCheck: {
       ignoredActions: [PER.FLUSH, PER.REHYDRATE, PER.PAUSE, PER.PERSIST, PER.PURGE, PER.REGISTER],
     },
-  }).concat([apiSlice.middleware, apiMemo.middleware, uploadApi.middleware]),
+  }).concat([apiSlice.middleware, apiMemo.middleware, apiPostListing.middleware, uploadApi.middleware]),
 });
 
 setupListeners(store.dispatch);

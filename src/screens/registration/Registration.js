@@ -117,7 +117,6 @@ export const Registration = ({ navigation }) => {
             </View>
           }
 
-
           <Button title="Register" onPress={handleRegistration} />
 
           <View style={styles.btnContainer}>

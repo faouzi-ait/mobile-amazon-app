@@ -1,51 +1,74 @@
 import React from 'react'
-import Button from 'react-native-button';
+import { Text } from 'react-native';
 
 import { useSelector } from 'react-redux';
+import { Ionicons } from "@expo/vector-icons";
 
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { Home, Login, Registration, Listing, Album, CameraCmp } from './screens';
+import { Home, Login, Search, Registration, NewPost, PostDetails, Album, User } from './screens';
 
 import { isUserLoggedIn } from './redux/slices/authSlice'
+import { selectedTheme } from './redux/slices/selectors';
 
 const Stack = createNativeStackNavigator();
-
-// SCREEN OPTIONS OBJECT
-const screenOptions = {
-  title: 'My home',
-  headerShown: false,
-  headerStyle: { backgroundColor: '#f4511e' },
-  headerTitleAlign: 'center',
-  headerTintColor: '#fff',
-  headerTitleStyle: {
-    fontWeight: 'bold',
-  },
-  headerLeft: () => (
-    <Button
-        style={{ fontSize: 20, color: 'white' }}
-        styleDisabled={{ color: 'white' }}
-        containerStyle={{ padding: 10, height: 45, borderRadius: 4 }}
-        disabledContainerStyle={{ backgroundColor: 'pink' }}
-        onPress={() => alert('This is a button!')}>
-        Press!
-    </Button>
-  ),
-}
+const Tab = createBottomTabNavigator();
 
 const Main = () => {
   const auth = useSelector(isUserLoggedIn);
+  const theme = useSelector(selectedTheme);
+
+  const tabNavColor = theme === 'dark' ? '#343434' : '#fff';
+
+  const BottomTabNavigator = () => {
+    return (
+      <Tab.Navigator screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: tabNavColor,
+          paddingBottom: 10,
+          height: 70,
+        },
+        tabBarIcon: ({ focused, color }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Search') {
+            iconName = focused ? 'ios-search' : 'ios-search-outline';
+          } else if (route.name === 'NewPost') {
+            iconName = focused ? 'md-add-circle' : 'md-add';
+          } else if (route.name === 'Album') {
+            iconName = focused ? 'ios-albums' : 'ios-albums-outline';
+          } else if (route.name === 'User') {
+            iconName = focused ? 'md-person' : 'md-person-outline';
+          }
+          return <Ionicons name={iconName} size={route.name === 'NewPost' ? 44 : 26} color={color} />;
+        },
+        tabBarLabel: ({ focused, color }) => {
+          return (
+            <Text>{/* {route.name === 'Home' ? 'Home' : 'Profile'} */}</Text>
+          );
+        },
+      })}>
+          <Tab.Screen name="Home" component={Home} options={{}} />
+          <Tab.Screen name="Search" component={Search} options={{}} />
+          <Tab.Screen name="NewPost" component={NewPost} options={{}} />
+          <Tab.Screen name="Album" component={Album} options={{}} />
+          <Tab.Screen name="User" component={User} options={{}} />
+      </Tab.Navigator>
+    );
+  };
 
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName={Home} screenOptions={screenOptions}>
-            <Stack.Screen name="Home" component={Home} />
-            {!auth && <Stack.Screen name="Login" component={Login} options={{ title: 'Login', headerShown: false }} />}
-            <Stack.Screen name="Registration" component={Registration} options={{ title: 'Registration', headerShown: false }} />
-            {auth && <Stack.Screen name="Listing" component={Listing} options={{ title: 'Listing', headerShown: false }} />}
-            {auth && <Stack.Screen name="Album" component={Album} options={{ title: 'Album', headerShown: false }} />}
-            {auth && <Stack.Screen name="Camera" component={CameraCmp} options={{ title: 'Camera', headerShown: false }} />}
+        <Stack.Navigator initialRouteName={'Home'} screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Main" component={BottomTabNavigator} options={{}} />
+            <Stack.Screen name="PostDetails" component={PostDetails} options={{}} />
+            {!auth && <Stack.Screen name="Login" component={Login} options={{}} />}
+            {!auth && <Stack.Screen name="Registration" component={Registration} options={{}} />}
         </Stack.Navigator>
     </NavigationContainer>
   )

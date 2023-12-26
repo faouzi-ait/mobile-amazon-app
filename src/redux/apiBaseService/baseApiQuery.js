@@ -10,10 +10,10 @@ import { BASE_API_URL } from '@env'
 console.log(BASE_API_URL);
 
 const baseQuery = fetchBaseQuery({
-    tagTypes: ['User', 'Images'],
     mode: "cors",
     credentials: 'include',
     baseUrl: BASE_API_URL,
+    tagTypes: ['User', 'Images', 'Posts', 'Post'],
     extractRehydrationInfo(action, { reducerPath }) {
         if (action.type === REHYDRATE) {
             return action.payload[reducerPath]
@@ -73,5 +73,6 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReAuth,
+    tagTypes: ['User', 'Images', 'Posts', 'Post'],
     endpoints: builder => ({}),
 });
