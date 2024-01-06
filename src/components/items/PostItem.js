@@ -1,7 +1,7 @@
 import { View, Text, Image, Alert, StyleSheet, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import React, { useState } from 'react'
-import { Modal } from '../../components'; 
+import Modal from '../../components/items/Modal'; 
 
 import { selectedTheme, currentUser, loggedInStatus } from '../../redux/slices/selectors';
 import { Ionicons } from "@expo/vector-icons";
