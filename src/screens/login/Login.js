@@ -21,7 +21,7 @@ export const Login = ({ navigation }) => {
   const theme = useSelector(selectedTheme);
 
   const inputStyle = theme === 'dark' ? darkStyles : lightStyles;
-  const placeholderStyle = theme === 'dark' ? '#fff' : '#000';
+  const color = theme === 'dark' ? '#fff' : '#000'
 
   const handleLogin = async () => {
     try {
@@ -56,13 +56,13 @@ export const Login = ({ navigation }) => {
     <ThemeProvider>
       <View style={styles.container}>
         <TextInput
-          placeholderTextColor={placeholderStyle}
+          placeholderTextColor={color}
           style={[styles.input, inputStyle]}
           placeholder="Username"
           onChangeText={(text) => setUsername(text)}
         />
         <TextInput
-          placeholderTextColor={placeholderStyle}
+          placeholderTextColor={color}
           style={[styles.input, inputStyle]}
           placeholder="Password"
           onChangeText={(text) => setPassword(text)}

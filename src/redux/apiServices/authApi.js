@@ -16,7 +16,17 @@ export const authApi = apiSlice.injectEndpoints({
               body,
             }),
         }),
+        getUserPhoto: builder.query({
+            query: (id) => `/user-photo/${id}`,
+            providesTags: ['User'],
+            keepUnusedDataFor: 1,
+        }),
+        getUser: builder.query({
+            query: (id) => `/user/${id}`,
+            providesTags: ['User'],
+            keepUnusedDataFor: 1,
+        }),
     })
 })
 
-export const { useLoginMutation, useCreateUserMutation } = authApi
+export const { useLoginMutation, useCreateUserMutation, useGetUserPhotoQuery, useGetUserQuery } = authApi

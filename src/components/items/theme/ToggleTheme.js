@@ -2,7 +2,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { toggleTheme } from '../../redux/slices/themeSlice';
+import { toggleTheme } from '../../../redux/slices/themeSlice';
 
 const ToggleThemeButton = () => {
   const dispatch = useDispatch();

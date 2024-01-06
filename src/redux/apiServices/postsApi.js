@@ -27,6 +27,16 @@ export const apiPostListing = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Post'],
         }),
+
+        createReview: builder.mutation({
+            query: (body) => ({
+              url: '/reviews',
+              method: 'PUT',
+              body,
+            }),
+            invalidatesTags: ['Post'],
+          }),
+
         userFavoritePost: builder.mutation({
             query: (id) => ({
               url: `/user-likes/${id}`,
@@ -47,4 +57,4 @@ export const apiPostListing = apiSlice.injectEndpoints({
     },
 })
 
-export const { useGetPostsQuery, useGetSinglePostQuery, useGetSinglePostDataQuery, useLikePostMutation, useViewedPostMutation, useFavoritePostMutation, useUserFavoritePostMutation } = apiPostListing
+export const { useGetPostsQuery, useGetSinglePostQuery, useGetSinglePostDataQuery, useCreateReviewMutation, useLikePostMutation, useViewedPostMutation, useFavoritePostMutation, useUserFavoritePostMutation } = apiPostListing

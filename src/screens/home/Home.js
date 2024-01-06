@@ -2,7 +2,6 @@ import { FlatList, Text, RefreshControl } from 'react-native';
 import React, { useState } from 'react'
 
 import { ThemeProvider, PostItem } from '../../components'; 
-// import { Ionicons } from "@expo/vector-icons";
 
 import { useGetPostsQuery } from '../../redux/apiServices/postsApi'
 
@@ -20,8 +19,6 @@ export const Home = ({ navigation }) => {
         setRefreshing(false);
       }
     };
-
-    console.log('POSTS: ', data);
 
     return (
         <ThemeProvider>
