@@ -2,7 +2,6 @@ import { FlatList, Text, RefreshControl } from 'react-native';
 import React, { useState } from 'react'
 
 import { ThemeProvider, PostItem } from '../../components'; 
-// import { Ionicons } from "@expo/vector-icons";
 
 import { useGetPostsQuery } from '../../redux/apiServices/postsApi'
 
@@ -11,15 +10,15 @@ export const Home = ({ navigation }) => {
     const { data, error, isLoading, refetch } = useGetPostsQuery();
 
     const onRefresh = async () => {
-        setRefreshing(true);
-        try {
-          await refetch();
-        } catch (error) {
-          console.error('Error while refreshing:', error);
-        } finally {
-          setRefreshing(false);
-        }
-      };
+      setRefreshing(true);
+      try {
+        await refetch();
+      } catch (error) {
+        console.error('Error while refreshing:', error);
+      } finally {
+        setRefreshing(false);
+      }
+    };
 
     return (
         <ThemeProvider>

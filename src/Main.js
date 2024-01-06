@@ -20,7 +20,7 @@ const Main = () => {
   const auth = useSelector(isUserLoggedIn);
   const theme = useSelector(selectedTheme);
 
-  const tabNavColor = theme === 'dark' ? '#343434' : '#fff';
+  const tabNavColor = theme === 'dark' ? '#000' : '#fff';
 
   const BottomTabNavigator = () => {
     return (
@@ -28,7 +28,7 @@ const Main = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: tabNavColor,
-          paddingBottom: 10,
+          paddingBottom: 17,
           height: 70,
         },
         tabBarIcon: ({ focused, color }) => {
@@ -45,11 +45,12 @@ const Main = () => {
           } else if (route.name === 'User') {
             iconName = focused ? 'md-person' : 'md-person-outline';
           }
-          return <Ionicons name={iconName} size={route.name === 'NewPost' ? 44 : 26} color={color} />;
+          return <Ionicons name={iconName} size={route.name === 'NewPost' ? 40 : 24} color={color} />;
         },
         tabBarLabel: ({ focused, color }) => {
           return (
-            <Text>{/* {route.name === 'Home' ? 'Home' : 'Profile'} */}</Text>
+            <></>
+            // <Text style={{ color }}>{route.name}</Text>
           );
         },
       })}>

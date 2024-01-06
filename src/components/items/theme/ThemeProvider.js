@@ -1,9 +1,8 @@
-// components/ThemeProvider.js
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 
-import { selectedTheme } from '../../redux/slices/selectors';
+import { selectedTheme } from '../../../redux/slices/selectors';
 
 const ThemeProvider = ({ children }) => {
   const themeType = useSelector(selectedTheme);
