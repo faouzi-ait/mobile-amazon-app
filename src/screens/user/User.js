@@ -22,14 +22,17 @@ export const User = ({ navigation }) => {
   return (
     <ThemeProvider>
       <ToggleThemeButton />
-        {auth && <Button label="Logout" style={styles.button} textStyle={styles.text} onPress={onLogout} />}
-        {auth  && <Button label="Go to Listing" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Listing')} />}
+
         <Button label="Go to Post Details" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('PostDetails')} />
+
+        {auth && <Button label="Logout" style={styles.button} textStyle={styles.text} onPress={onLogout} />}
+        
+        {auth  && <Button label="Go to Home" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Home')} />}
         {auth  && <Button label="Go to Album" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Album')} />}
-        {auth  && <Button label="Go to Camera" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Camera')} />}
+        {auth && <Button label="Go to Favorites" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Favorites')} />}
+        
         {!auth && <Button label="Go to Login" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Login')} />}
         {!auth && <Button label="Go to Registration" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Registration')} />}
-        {auth && <Button label="Logout" onPress={onLogout} />}
     </ThemeProvider>
   );
 }

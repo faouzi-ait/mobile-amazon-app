@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux'
 
 import Modal from '../modal/Modal';
 import ReviewList from '../reviewList/ReviewList'; 
+import PostActions from '../postActions/PostActions';
 import PostDetails from '../postDetails/PostDetails';
 import PostComments from '../postComment/PostComment';
-import PostActions from '../postActions/PostActions';
 
 import { selectedTheme, currentUser, loggedInStatus } from '../../../redux/slices/selectors';
 
@@ -28,7 +28,6 @@ const PostItem = ({ post, navigation }) => {
     const loggedInUserPhoto = useGetUserPhotoQuery(userId);
     const [createReview, infos] = api.useCreateReviewMutation();
     const { data, error, isLoading } = api.useGetSinglePostQuery(post._id);
-    console.log(data);
     
     const isDark = theme === 'dark'
     const color = isDark ? '#fff' : '#000'
@@ -43,6 +42,8 @@ const PostItem = ({ post, navigation }) => {
             postID: data.post._id,
             comment: commentRef.current.value
         });
+
+        commentRef.current.value = null
     }
 
     return (
@@ -60,8 +61,8 @@ const PostItem = ({ post, navigation }) => {
                         <Image source={{ uri: data?.post.photo }} style={[styles.postImage, { borderRadius: 10, }]} />
                     </TouchableOpacity>
 
-                    <PostActions data={data} userId={userId} color={color} isLoggedIn={isLoggedIn} navigation={navigation} setModalVisible={setModalVisible} />
-                    <PostDetails data={data} userId={userId} color={color} />
+                    <PostActions data={data?.post} userId={userId} color={color} isLoggedIn={isLoggedIn} navigation={navigation} setModalVisible={setModalVisible} />
+                    <PostDetails data={data?.post} userId={userId} color={color} />
                     <PostComments isLoggedIn={isLoggedIn} loggedInUserPhoto={loggedInUserPhoto} commentRef={commentRef} color={color} infos={infos} sendComment={sendComment} />
                 </View>) 
                 : 
@@ -78,7 +79,7 @@ const PostItem = ({ post, navigation }) => {
 
                     <View style={{ padding: 10, paddingTop: 0 }}>
                         <PostActions data={data} userId={userId} color={color} isLoggedIn={isLoggedIn} navigation={navigation} setModalVisible={setModalVisible} />
-                        <PostDetails data={data} userId={userId} color={color} />
+                        <PostDetails data={data?.post} userId={userId} color={color} />
                     </View>
                     
                     <View style={styles.reviewsSectionLayout}>

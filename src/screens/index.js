@@ -6,5 +6,6 @@ import PostDetails from './postDetails'
 import Album from './album'
 import User from './user'
 import Search from './search'
+import Favorites from './favorites'
 
-export { Login, Home, Registration, NewPost, PostDetails, Album, User, Search };
+export { Login, Home, Registration, NewPost, PostDetails, Album, User, Search, Favorites };

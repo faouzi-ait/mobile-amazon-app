@@ -6,7 +6,7 @@ import { ThemeProvider, ToggleThemeButton } from '../../../components';
 
 import { useUploadMutation } from '../../../redux/apiServices/uploadApi';
 
-export const NewPost = () => {
+export const NewPost = ({ navigation }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [upload, { data, error, isLoading }] = useUploadMutation();
   const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -62,6 +62,8 @@ export const NewPost = () => {
                   name: 'photo.jpg',
               });
           }
+
+        console.log(selectedImages);
         const { data } = await upload(formData);
 
         setConfirmationMessage(data?.message);

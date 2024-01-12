@@ -1,5 +1,4 @@
 import React from 'react'
-import { Text } from 'react-native';
 
 import { useSelector } from 'react-redux';
 import { Ionicons } from "@expo/vector-icons";
@@ -8,7 +7,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { Home, Login, Search, Registration, NewPost, PostDetails, Album, User } from './screens';
+// import { Home, Login, Search, Registration, NewPost, PostDetails, Album, User, Favorites } from './screens';
+import * as Page from './screens';
 
 import { isUserLoggedIn } from './redux/slices/authSlice'
 import { selectedTheme } from './redux/slices/selectors';
@@ -54,11 +54,11 @@ const Main = () => {
           );
         },
       })}>
-          <Tab.Screen name="Home" component={Home} options={{}} />
-          <Tab.Screen name="Search" component={Search} options={{}} />
-          <Tab.Screen name="NewPost" component={NewPost} options={{}} />
-          <Tab.Screen name="Album" component={Album} options={{}} />
-          <Tab.Screen name="User" component={User} options={{}} />
+          <Tab.Screen name="Home" component={Page.Home} options={{}} />
+          <Tab.Screen name="Search" component={Page.Search} options={{}} />
+          <Tab.Screen name="NewPost" component={Page.NewPost} options={{}} />
+          <Tab.Screen name="Album" component={Page.Album} options={{}} />
+          <Tab.Screen name="User" component={Page.User} options={{}} />
       </Tab.Navigator>
     );
   };
@@ -67,9 +67,10 @@ const Main = () => {
     <NavigationContainer>
         <Stack.Navigator initialRouteName={'Home'} screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Main" component={BottomTabNavigator} options={{}} />
-            <Stack.Screen name="PostDetails" component={PostDetails} options={{}} />
-            {!auth && <Stack.Screen name="Login" component={Login} options={{}} />}
-            {!auth && <Stack.Screen name="Registration" component={Registration} options={{}} />}
+            <Stack.Screen name="PostDetails" component={Page.PostDetails} options={{}} />
+            {auth && <Stack.Screen name="Favorites" component={Page.Favorites} options={{}} />}
+            {!auth && <Stack.Screen name="Login" component={Page.Login} options={{}} />}
+            {!auth && <Stack.Screen name="Registration" component={Page.Registration} options={{}} />}
         </Stack.Navigator>
     </NavigationContainer>
   )

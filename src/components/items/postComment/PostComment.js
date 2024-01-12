@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 import { styles } from '../postItems/styles'
 
 const PostComments = ({ isLoggedIn, loggedInUserPhoto, commentRef, color, infos, sendComment }) => {
+  
   return (
     <>
       {isLoggedIn && (
         <View style={styles.postCommentLayout}>
           <Image source={{ uri: loggedInUserPhoto?.data?.photo }} style={styles.postCommentImage} />
-          <TextInput
+          {isLoggedIn && <TextInput
             ref={commentRef}
             onChangeText={(text) => {
               commentRef.current.value = text;
@@ -18,7 +19,7 @@ const PostComments = ({ isLoggedIn, loggedInUserPhoto, commentRef, color, infos,
             placeholderTextColor={color}
             style={[styles.postText, { color }]}
             placeholder="Add a comment..."
-          />
+          />}
           <TouchableOpacity style={[styles.verifyButton, { borderLeftWidth: !infos.isLoading ? 3 : 0, borderColor: color }]} onPress={sendComment}>
             {infos.isLoading ? (
               <Text>

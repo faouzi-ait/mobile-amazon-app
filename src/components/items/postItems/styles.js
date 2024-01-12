@@ -80,7 +80,6 @@ export const styles = StyleSheet.create({
     separation: { 
         flex: 1, 
         height: 1, 
-        // backgroundColor: 'black' 
     },
     reviewsSectionLayout: { 
         flexDirection: 'row', 

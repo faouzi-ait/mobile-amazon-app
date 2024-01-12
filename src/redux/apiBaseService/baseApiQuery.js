@@ -24,6 +24,8 @@ const baseQuery = fetchBaseQuery({
     },
     prepareHeaders: async (headers) => {
         const token = await AsyncStorage.getItem('token');
+        // headers.set('Content-Type', 'multipart/form-data');
+
         if(token) {
             headers.set('Authorization', `Bearer ${token}`);
         }

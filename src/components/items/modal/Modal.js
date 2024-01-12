@@ -8,7 +8,7 @@ import { useViewedPostMutation } from '../../../redux/apiServices/postsApi'
 
 import { styles } from './styles'
 
-const ModalComponent = ({ postID, setModalVisible, isVisible, children }) => {
+const ModalComponent = ({ postID, setModalVisible, isVisible, children, transparent, ...rest }) => {
     const [viewedPost] = useViewedPostMutation();
     const theme = useSelector(selectedTheme);
 
@@ -28,7 +28,9 @@ const ModalComponent = ({ postID, setModalVisible, isVisible, children }) => {
             swipeDirection={['down']}
             onSwipeComplete={() => setModalVisible(false)}
             onBackdropPress={() => setModalVisible(false)}
-            style={styles.modal}>
+            style={styles.modal} 
+            transparent={transparent}
+            {...rest}>
                 <View style={[styles.container, { backgroundColor: color, zIndex: 9999 }]}>{children}</View>
         </Modal>
     );

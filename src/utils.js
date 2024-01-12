@@ -8,10 +8,20 @@ export const darkStyles = {
   color: '#fff',
 }
 
-export const isLiked = (data, userId) => data?.post?.likes.includes(userId);
+export const isLiked = (data, userId) => data?.likes?.includes(userId);
 
-export const hasReview = (data, userId) => data?.post?.reviews.some(el => el.user === userId);
+export const isFavorites = (data, userId) => data?.favorites?.includes(userId);
 
-export const isFavorites = (data, userId) => data?.post?.favorites.includes(userId);
+export const hasReview = (data, userId) => data?.reviews?.some(el => el.user === userId);
 
 export const showIcon = (iconName, value) => `${iconName}${value ? '' : '-outline'}`
+
+export const displayMessage = (searchTerm, data) => {
+  if(!searchTerm && data?.items?.length === 0) {
+    return 'Search posts in the input field above'
+  } else if (searchTerm && data?.items?.length === 0) {
+    return 'No posts found'
+  } else {
+    return ''
+  }
+}

@@ -14,7 +14,7 @@ const PostActions = ({ data, userId, color, isLoggedIn, navigation, setModalVisi
     const [userFavoritePost] = api.useUserFavoritePostMutation();
 
     const _userLoggeInAlert = () =>
-        Alert.alert("User Error", "You must be logged in",
+        Alert.alert("Oops...", "You must first log in",
         [
             { text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
             { text: "Login", onPress: () => navigation.navigate("Login") }
@@ -23,17 +23,17 @@ const PostActions = ({ data, userId, color, isLoggedIn, navigation, setModalVisi
 
   return (
     <View style={styles.postInfo}>
-        <Ionicons name={showIcon('md-heart', isLiked(data, userId))} size={26} color={color} onPress={() => isLoggedIn ? likePost(data.post._id) : _userLoggeInAlert()} />
+        <Ionicons name={showIcon('md-heart', isLiked(data, userId))} size={26} color={color} onPress={() => isLoggedIn ? likePost(data?._id) : _userLoggeInAlert()} />
         <Ionicons name={showIcon('ios-chatbubbles', hasReview(data, userId))} size={26} color={color} style={styles.reviews} onPress={() => setModalVisible(true)} />
         <Ionicons name={showIcon('ios-share', false)} size={26} color={color} />
         <Ionicons name={showIcon('ios-bookmark', isFavorites(data, userId))} size={26} color={color} style={styles.favorites} onPress={() => {
                 if(isLoggedIn) {
-                    favoritePost(data.post._id);
-                    userFavoritePost(data.post._id);
+                    favoritePost(data?._id);
+                    userFavoritePost(data?._id);
                 } else {
                     _userLoggeInAlert();
                 }
-            }} 
+            }}
         />
     </View>
   )

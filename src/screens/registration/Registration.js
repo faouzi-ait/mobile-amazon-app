@@ -60,6 +60,8 @@ export const Registration = ({ navigation }) => {
       body.append('phone', phone);
       body.append('username', username);
       body.append('password', password);
+
+      console.log(image);
       
       if(image) {
         body.append('image', {

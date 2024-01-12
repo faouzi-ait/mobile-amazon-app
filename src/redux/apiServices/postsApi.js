@@ -4,7 +4,10 @@ export const apiPostListing = apiSlice.injectEndpoints({
     overrideExisting: true,
     endpoints: builder => ({
         getPosts: builder.query({
-            query: (page = 1, size = 10) => `/listing-posts?page=${page}&pageSize=${size}`,
+            query: ({ searchTerm, page, pageSize }) => {
+              const queryParams = new URLSearchParams({ q: searchTerm, page, pageSize });
+              return `/listing-posts?${queryParams.toString()}`;
+            },
             providesTags: ['Posts'],
             keepUnusedDataFor: 1,
         }),
@@ -20,6 +23,18 @@ export const apiPostListing = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Post'],
         }),
+
+
+        createPost: builder.mutation({
+            query: (body) => ({
+                url: '/new-post',
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: ['Post'],
+        }),
+
+
         favoritePost: builder.mutation({
             query: (id) => ({
               url: `/favorite-post/${id}`,
@@ -27,7 +42,6 @@ export const apiPostListing = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Post'],
         }),
-
         createReview: builder.mutation({
             query: (body) => ({
               url: '/reviews',
@@ -36,7 +50,6 @@ export const apiPostListing = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Post'],
           }),
-
         userFavoritePost: builder.mutation({
             query: (id) => ({
               url: `/user-likes/${id}`,
@@ -57,4 +70,4 @@ export const apiPostListing = apiSlice.injectEndpoints({
     },
 })
 
-export const { useGetPostsQuery, useGetSinglePostQuery, useGetSinglePostDataQuery, useCreateReviewMutation, useLikePostMutation, useViewedPostMutation, useFavoritePostMutation, useUserFavoritePostMutation } = apiPostListing
+export const { useGetPostsQuery, useGetSinglePostQuery, /*useGetSearchPostsQuery,*/ useGetSinglePostDataQuery,  useCreatePostMutation, useCreateReviewMutation, useLikePostMutation, useViewedPostMutation, useFavoritePostMutation, useUserFavoritePostMutation } = apiPostListing

@@ -7,6 +7,7 @@ import ReviewList from './items/reviewList/ReviewList'
 import PostComments from './items/postComment/PostComment'
 import PostDetails from './items/postDetails/PostDetails'
 import PostActions from './items/postActions/PostActions'
+import Debounce from './items/debounce/Debounce'
 
 export { 
     ThemeProvider, 
@@ -18,4 +19,5 @@ export {
     PostComments, 
     PostDetails, 
     PostActions,
+    Debounce,
 }

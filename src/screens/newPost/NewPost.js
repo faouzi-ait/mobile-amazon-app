@@ -1,5 +1,6 @@
 import * as UI from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 import * as ImagePicker from 'expo-image-picker';
 
 import { ThemeProvider, ToggleThemeButton } from '../../components'; 
@@ -8,10 +9,16 @@ import Library from './mode/Library'
 import Camera from './mode/Camera'
 import CameraRoll from './mode/CameraRoll'
 
+import { selectedTheme, currentUser, loggedInStatus } from '../../redux/slices/selectors';
 
-export const NewPost = () => {
+
+export const NewPost = ({ navigation }) => {
   const [mode, setMode] = useState('lib');
-// 
+  const theme = useSelector(selectedTheme);
+
+  const isDark = theme === 'dark'
+  const color = isDark ? '#fff' : '#000'
+
   useEffect(() => {
     requestPermission();
   }, []);
@@ -27,47 +34,11 @@ export const NewPost = () => {
 
   return (
       <ThemeProvider>
-        {/* {mode === 'lib' ? <Library /> : <Camera />} */}
-      <CameraRoll />
+        {/* {mode === 'lib' ? <Library color={color} /> : <Camera color={color} />} */}
+      {/* <CameraRoll color={color} /> */}
+      <CameraRoll color={color} navigation={navigation} />
       </ThemeProvider>
   )
 }
-
-const styles = UI.StyleSheet.create({
-  dislpayLayout: { 
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'center'
-  },
-  upload: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '75%'
-  },
-  deleteText: {
-      color: 'white', 
-      fontSize: 10, 
-      fontWeight: 'bold'
-    },
-    deleteBtn: { 
-      alignItems: 'center', 
-      justifyContent: 'center', 
-      position: 'absolute', 
-      top: 3, 
-      right: 3, 
-      backgroundColor: 'rgba(0, 0, 0, 0.7)', 
-      width: 20, 
-      height: 20, 
-      borderRadius: '50%' 
-  },
-    images: { 
-      width: 175, 
-      height: 175, 
-      margin: 5, 
-      borderWidth: 3, 
-      borderRadius: 5, 
-      borderColor: 'rgba(0, 0, 0, .4)' 
-  }
-});
 
 export default NewPost;

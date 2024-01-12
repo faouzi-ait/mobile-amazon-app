@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import PropTypes from 'prop-types';
-
 import { isLiked } from '../../../utils'
 
 import { styles } from '../postItems/styles'
@@ -15,7 +13,9 @@ const _likedPostMessage = (likes) => {
     } else if(isLiked(data, userId) && likes?.length === 1) {
         return 'You liked this post.'
     } else if(!isLiked(data, userId) && likes?.length > 0) {
-        return `${likes?.length} person${likes?.length > 1 ? 's' : ''} liked this post`
+        return `${likes?.length} people${likes?.length > 1 ? 's' : ''} liked this post`
+    } else {
+      return 'No likes yet :(';
     }
 }
 
@@ -23,24 +23,19 @@ const _likedPostMessage = (likes) => {
     <>
       <View style={{ flexDirection: 'row' }}>
         <Text style={[styles.postText, { color, marginBottom: 2 }]}>
-          {data?.post.likes?.length === 0 ? 'No likes yet' : _likedPostMessage(data?.post?.likes)}
+          {data?.post?.likes?.length === 0 ? 'No likes yet' : _likedPostMessage(data?.likes)}
         </Text>
-        <Text style={[styles.postText, { color, marginLeft: 'auto' }]}>{data?.post?.totalViews} views</Text>
+        <Text style={[styles.postText, { color, marginLeft: 'auto' }]}>{data?.totalViews} views</Text>
       </View>
 
-      <Text style={[styles.postText, { color, marginBottom: 3 }]}>{data?.post.post}</Text>
+      <Text style={[styles.postText, { color, marginBottom: 3 }]}>{data?.post}</Text>
 
       <View style={{ flexDirection: 'row' }}>
-        <Text style={[styles.postText, { color }]}>Posted on {new Date(data?.post.createdAt)?.toUTCString().substring(0, 16)}</Text>
-        <Text style={[styles.postText, { color, marginLeft: 'auto' }]}>{data?.post.totalReviews === 0 ? 'No' : data?.post.totalReviews} comments</Text>
+        <Text style={[styles.postText, { color }]}>Posted on {new Date(data?.createdAt)?.toUTCString().substring(0, 16)}</Text>
+        <Text style={[styles.postText, { color, marginLeft: 'auto' }]}>{data?.totalReviews === 0 ? 'No' : data?.totalReviews} comments</Text>
       </View>
     </>
   );
-};
-
-PostDetails.propTypes = {
-  data: PropTypes.object.isRequired,
-  color: PropTypes.string.isRequired,
 };
 
 export default PostDetails;
