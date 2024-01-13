@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, FlatList, Image, KeyboardAvoidingView, TextInput, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, Image, KeyboardAvoidingView, TextInput, View, Text, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { Button } from '../../../components'; 
@@ -13,7 +13,8 @@ const CameraRollScreen = ({ navigation , color }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [createPost, { data, error, isLoading }] = useCreatePostMutation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [createPost, { data, error }] = useCreatePostMutation();
 
   useEffect(() => {
     fetchPhotos();
@@ -45,16 +46,17 @@ const CameraRollScreen = ({ navigation , color }) => {
     } catch (error) {
       console.error('Error fetching photos:', error);
     }
-};
+  };
 
   const uploadImages = async () => {
-    if (!selectedImage) {
-      alert(`Please select an image to upload`);
+    if (!selectedImage || !post) {
+      alert(`Please select an image and a caption to upload`);
       return false;
     }
-
+    setIsLoading(true);
+    
     const asset = await MediaLibrary.getAssetInfoAsync(selectedImage?.id, {})
-
+    
     try {
       const body = new FormData();
       body.append('post', post);
@@ -72,8 +74,11 @@ const CameraRollScreen = ({ navigation , color }) => {
         navigation.navigate('Home');
       }
       
+      setIsLoading(false)
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false)
     }
 };
 
@@ -107,6 +112,15 @@ if(isModalVisible) {
   )
 }
 
+if(isLoading) {
+  return (
+    <View style={styles.upload}>
+      <ActivityIndicator size="large" color="rgba(255, 255, 255, 1)" />
+      <Text style={{ color: 'white' }}>Uploading Post...</Text>
+    </View>
+  )
+}
+
 return (
     <>
       <View style={styles.container}>
@@ -120,7 +134,7 @@ return (
             <Button label="Select this picture" style={styles.button} textStyle={{ color }} onPress={() => setModalVisible(true)} />
           </View>
         </View>
-    </View>
+      </View>
       <View style={{ height: '40%' }}>
         <FlatList
           data={photos}
@@ -213,6 +227,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#3498db',
   },
+  upload: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '75%',
+    color: 'white'
+},
 });
 
 export default CameraRollScreen;

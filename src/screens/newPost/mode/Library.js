@@ -2,14 +2,20 @@ import * as UI from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
-import { ThemeProvider, ToggleThemeButton } from '../../../components'; 
+import { ThemeProvider, ToggleThemeButton, Button } from '../../../components'; 
 
 import { useUploadMutation } from '../../../redux/apiServices/uploadApi';
+import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
+
+import * as MediaLibrary from 'expo-media-library';
 
 export const NewPost = ({ navigation }) => {
+  const [post, setComment] = useState(null);
   const [selectedImages, setSelectedImages] = useState([]);
-  const [upload, { data, error, isLoading }] = useUploadMutation();
   const [confirmationMessage, setConfirmationMessage] = useState('');
+
+  const [createPost, { data, error, isLoading }] = useCreatePostMutation();
+  // const [upload, { data, error, isLoading }] = useUploadMutation();
 
   useEffect(() => {
     requestPermission();
@@ -29,7 +35,7 @@ export const NewPost = ({ navigation }) => {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: false,
-        allowsMultipleSelection: true,
+        allowsMultipleSelection: false,
         selectionLimit: 5,
         quality: 1,
       });
@@ -50,69 +56,96 @@ export const NewPost = ({ navigation }) => {
   };
 
   const uploadImages = async () => {
-    if (selectedImages.length === 0) return alert(`Please select images to upload`);  
-    
+    if (!selectedImages || !post) {
+      alert(`Please select an image and a caption to upload`);
+      return false;
+    }
+
       try {
-          const formData = new FormData();
-      
-          for (let i = 0; i < selectedImages.length; i++) {
-            formData.append(`image`, {
-                  uri: selectedImages[i],
-                  type: 'image/jpeg',
-                  name: 'photo.jpg',
-              });
-          }
+        const formData = new FormData();
+        formData.append(`post`, post);
+        formData.append(`image`, {
+          uri: selectedImages[0],
+          type: 'image/jpeg',
+          name: 'photo.jpg',
+        });
 
-        console.log(selectedImages);
-        const { data } = await upload(formData);
+        const data = await createPost(formData);
 
-        setConfirmationMessage(data?.message);
-        setSelectedImages([]);
+        if(data.data.success) {
+          setSelectedImages([]);
+          setConfirmationMessage(null)
+          setComment(null);
 
-        setTimeout(() => {
-          setConfirmationMessage('');
-        }, 1500);
+          setTimeout(() => {
+            navigation.navigate('Home');
+          }, 500);
+        }
       } catch (error) {
-          console.error(error);
+          console.error(error.data);
       }
   };
+
+  const Button2 = ({ label, onPress }) => (
+    <UI.Pressable style={[styles.button, { height: '8%', justifyContent: 'center', alignItems: 'center' }]} onPress={onPress}>
+      <UI.Text style={styles.text}>{label}</UI.Text>
+    </UI.Pressable>
+  );
 
   const removeImage = (i) => setSelectedImages((img) => img.filter((_, index) => index !== i));
 
   return (
       <ThemeProvider>
-        <UI.Button title="Pick Images" onPress={pickMultipleImages} />
-        <UI.Button title="Upload Images" onPress={uploadImages} />
-        <UI.Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+        {selectedImages.length === 0 && (
+          <Button2 label="Select your Image" onPress={pickMultipleImages} />
+        )}
+
         {!isLoading ? 
-            <UI.View style={styles.dislpayLayout}>
-                {selectedImages.map((uri, index) => (
-                    <UI.TouchableOpacity key={index} onPress={() => removeImage(index)}>
-                        <UI.View style={{ position: 'relative' }}>
-                            <UI.Image source={{ uri }} style={styles.images} />
-                            <UI.TouchableOpacity
-                                onPress={() => removeImage(index)}
-                                style={styles.deleteBtn}>
-                                <UI.Text style={styles.deleteText}>X</UI.Text>
-                            </UI.TouchableOpacity>
-                        </UI.View>
-                    </UI.TouchableOpacity>
-                ))}
+          <UI.View style={styles.dislpayLayout}>
+              {selectedImages.map((uri, index) => (
+                  <UI.TouchableOpacity key={index} onPress={() => removeImage(index)}>
+                      <UI.View style={{ position: 'relative' }}>
+                          <UI.Image source={{ uri }} style={styles.images} />
+                          <UI.TouchableOpacity
+                              onPress={() => removeImage(index)}
+                              style={styles.deleteBtn}>
+                              <UI.Text style={styles.deleteText}>X</UI.Text>
+                          </UI.TouchableOpacity>
+                      </UI.View>
+                  </UI.TouchableOpacity>
+              ))}
+
+
+              {selectedImages.length !== 0 && <UI.KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : 'height'} style={{ width: '100%' }}>
+                <UI.TextInput
+                  value={post}
+                  style={styles.postInput}
+                  placeholderTextColor='#fff'
+                  placeholder="Add a caption"
+                  onChangeText={(text) => setComment(text)}
+                />
+                <Button label={`${isLoading ? 'Posting...' : 'Create Post'}`} style={styles.button2} textStyle={styles.text2} onPress={uploadImages} disabled={isLoading} />
+              </UI.KeyboardAvoidingView>}
+
+
               {confirmationMessage && (
                 <UI.View style={styles.upload}>
-                  <UI.Text>{confirmationMessage}</UI.Text>
+                  <UI.Text style={{ color: 'white' }}>{confirmationMessage}</UI.Text>
                 </UI.View>
               )}
             </UI.View>
             :
             <UI.View style={styles.upload}>
-              <UI.ActivityIndicator size="large" color="rgba(0, 0, 0, .6)" />
-              <UI.Text>Uploading Images...</UI.Text>
+              <UI.ActivityIndicator size="large" color="rgba(255, 255, 255, 1)" />
+              <UI.Text style={{ color: 'white', marginTop: 2 }}>Uploading Post...</UI.Text>
             </UI.View>
           }
       </ThemeProvider>
   )
 }
+
+const { width } = UI.Dimensions.get('window');
+const itemSize = width - 30;
 
 const styles = UI.StyleSheet.create({
   dislpayLayout: { 
@@ -123,32 +156,60 @@ const styles = UI.StyleSheet.create({
   upload: {
       alignItems: 'center',
       justifyContent: 'center',
-      height: '75%'
+      height: '75%',
+      color: 'white'
   },
   deleteText: {
-      color: 'white', 
-      fontSize: 10, 
-      fontWeight: 'bold'
-    },
-    deleteBtn: { 
-      alignItems: 'center', 
-      justifyContent: 'center', 
-      position: 'absolute', 
-      top: 3, 
-      right: 3, 
-      backgroundColor: 'rgba(0, 0, 0, 0.7)', 
-      width: 20, 
-      height: 20, 
-      borderRadius: '50%' 
+    color: 'white', 
+    fontSize: 10, 
+    fontWeight: 'bold'
   },
-    images: { 
-      width: 175, 
-      height: 175, 
-      margin: 5, 
-      borderWidth: 3, 
-      borderRadius: 5, 
-      borderColor: 'rgba(0, 0, 0, .4)' 
-  }
+  deleteBtn: { 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    position: 'absolute', 
+    top: '3%', 
+    left: '3%',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+    width: '10%', 
+    height: '10%', 
+    borderRadius: '50%' 
+  },
+  button: {
+    backgroundColor: 'black',
+  },
+  button2: {
+    height: '25%',
+    backgroundColor: 'black',
+    justifyContent: 'center'
+  },
+  text2: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  postInput: { 
+    color: 'white', 
+    borderWidth: 1, 
+    borderColor: '#fff', 
+    padding: 15, 
+    margin: 15 
+  },
+  images: { 
+    width: itemSize, 
+    height: itemSize, 
+    margin: 5,
+    marginBottom: 0, 
+    borderWidth: 3, 
+    borderRadius: 5, 
+    borderColor: 'rgba(255, 255, 255, 1)' 
+  },
+  text: {
+    fontSize: 15,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
 });
 
 export default NewPost;

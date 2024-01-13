@@ -15,6 +15,7 @@ import { selectedTheme, currentUser, loggedInStatus } from '../../redux/slices/s
 export const NewPost = ({ navigation }) => {
   const [mode, setMode] = useState('lib');
   const theme = useSelector(selectedTheme);
+  const { isLoggedIn } = useSelector(loggedInStatus);
 
   const isDark = theme === 'dark'
   const color = isDark ? '#fff' : '#000'
@@ -32,13 +33,63 @@ export const NewPost = ({ navigation }) => {
     }
   };
 
+  const switchMode = (mode) => {
+    switch(mode) {
+      case 'lib':
+        return <Library navigation={navigation} color={color} />
+      case 'cam':
+        return <Camera navigation={navigation} color={color} />
+      case 'roll':
+        return <CameraRoll navigation={navigation} color={color} />
+      default:
+        return;
+    }
+  }
+
+  const Button = ({ mode, label }) => (
+    <UI.Pressable style={[styles.button, styles.modeContainerMargin]} onPress={() => setMode(mode)}>
+      <UI.Text style={styles.text}>{label}</UI.Text>
+    </UI.Pressable>
+  );
+
   return (
       <ThemeProvider>
-        {/* {mode === 'lib' ? <Library color={color} /> : <Camera color={color} />} */}
-      {/* <CameraRoll color={color} /> */}
-      <CameraRoll color={color} navigation={navigation} />
+        <UI.View style={styles.modeContainer}>
+          <Button mode='lib' label="library" />
+          <Button mode='roll' label="roll" />
+          <Button mode='cam' label="camera" />
+        </UI.View>
+        {switchMode(mode)}
       </ThemeProvider>
   )
 }
+
+const styles = UI.StyleSheet.create({
+  modeContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    marginBottom: '2%' 
+  },
+  modeContainerMargin: {
+    marginLeft: 3,
+    marginRight: 3
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'black',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+});
 
 export default NewPost;

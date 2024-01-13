@@ -18,13 +18,11 @@ export const apiPostListing = apiSlice.injectEndpoints({
         }),
         likePost: builder.mutation({
             query: (id) => ({
-              url: `/like-post/${id}`,
-              method: 'POST',
+                url: `/like-post/${id}`,
+                method: 'POST',
             }),
             invalidatesTags: ['Post'],
         }),
-
-
         createPost: builder.mutation({
             query: (body) => ({
                 url: '/new-post',
@@ -33,20 +31,18 @@ export const apiPostListing = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Post'],
         }),
-
-
         favoritePost: builder.mutation({
             query: (id) => ({
-              url: `/favorite-post/${id}`,
-              method: 'POST',
+                url: `/favorite-post/${id}`,
+                method: 'POST',
             }),
             invalidatesTags: ['Post'],
         }),
         createReview: builder.mutation({
             query: (body) => ({
-              url: '/reviews',
-              method: 'PUT',
-              body,
+                url: '/reviews',
+                method: 'PUT',
+                body,
             }),
             invalidatesTags: ['Post'],
           }),
@@ -59,8 +55,8 @@ export const apiPostListing = apiSlice.injectEndpoints({
         }),
         viewedPost: builder.mutation({
             query: (id) => ({
-              url: `/viewed-post/${id}`,
-              method: 'POST',
+                url: `/viewed-post/${id}`,
+                method: 'POST',
             }),
             invalidatesTags: ['Post'],
         }),
@@ -70,4 +66,4 @@ export const apiPostListing = apiSlice.injectEndpoints({
     },
 })
 
-export const { useGetPostsQuery, useGetSinglePostQuery, /*useGetSearchPostsQuery,*/ useGetSinglePostDataQuery,  useCreatePostMutation, useCreateReviewMutation, useLikePostMutation, useViewedPostMutation, useFavoritePostMutation, useUserFavoritePostMutation } = apiPostListing
+export const { useGetPostsQuery, useGetSinglePostQuery, useGetSinglePostDataQuery,  useCreatePostMutation, useCreateReviewMutation, useLikePostMutation, useViewedPostMutation, useFavoritePostMutation, useUserFavoritePostMutation } = apiPostListing

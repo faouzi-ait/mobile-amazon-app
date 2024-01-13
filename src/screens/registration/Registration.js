@@ -61,8 +61,6 @@ export const Registration = ({ navigation }) => {
       body.append('username', username);
       body.append('password', password);
 
-      console.log(image);
-      
       if(image) {
         body.append('image', {
           uri: image,
