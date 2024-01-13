@@ -131,7 +131,7 @@ return (
               </View>
             )}
           <View style={styles.modalButton}>
-            <Button label="Select this picture" style={styles.button} textStyle={{ color }} onPress={() => setModalVisible(true)} />
+            <Button label="Select this picture" style={styles.button} textStyle={{ color, fontWeight: 'bold' }} onPress={() => setModalVisible(true)} />
           </View>
         </View>
       </View>
@@ -219,13 +219,15 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   button: {
+    fontWeight: 'bold',
     marginTop: '3%',
-    padding: 10,
+    padding: '3%',
     borderRadius: 6,
-    backgroundColor: '#3498db',
+    backgroundColor: 'black',
   },
   upload: {
     alignItems: 'center',
