@@ -1,4 +1,4 @@
-import { StyleSheet ,Text, View, Button, Pressable, TextInput, Image, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { StyleSheet ,Text, View, Pressable, TextInput, Image, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import { shareAsync } from 'expo-sharing';
@@ -52,7 +52,7 @@ export const CameraCmp = ({ navigation }) => {
     }
     const file = await compressedImage(camImage?.uri);
     // MediaLibrary.saveToLibraryAsync(file.uri).then(() => setCamImage(undefined));
-    console.log(file)
+
     try {
       const body = new FormData();
       body.append('post', comment);
