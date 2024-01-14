@@ -2,12 +2,11 @@ import * as UI from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
-import { ThemeProvider, ToggleThemeButton, Button } from '../../../components'; 
+import { ThemeProvider, Button } from '../../../components'; 
 
-import { useUploadMutation } from '../../../redux/apiServices/uploadApi';
 import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
 
-import * as MediaLibrary from 'expo-media-library';
+import { compressedImage } from '../../../utils'
 
 export const NewPost = ({ navigation }) => {
   const [post, setComment] = useState(null);
@@ -34,10 +33,8 @@ export const NewPost = ({ navigation }) => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
+        allowsEditing: true,
         allowsMultipleSelection: false,
-        selectionLimit: 5,
-        quality: 1,
       });
 
 
@@ -61,33 +58,35 @@ export const NewPost = ({ navigation }) => {
       return false;
     }
 
-      try {
-        const formData = new FormData();
-        formData.append(`post`, post);
-        formData.append(`image`, {
-          uri: selectedImages[0],
-          type: 'image/jpeg',
-          name: 'photo.jpg',
-        });
+    const file = await compressedImage(selectedImages[0]);
 
-        const data = await createPost(formData);
+    try {
+      const formData = new FormData();
+      formData.append(`post`, post);
+      formData.append(`image`, {
+        uri: file.uri,
+        type: 'image/jpeg',
+        name: 'photo.jpg',
+      });
 
-        if(data.data.success) {
-          setSelectedImages([]);
-          setConfirmationMessage(null)
-          setComment(null);
+      const data = await createPost(formData);
 
-          setTimeout(() => {
-            navigation.navigate('Home');
-          }, 500);
-        }
-      } catch (error) {
-          console.error(error.data);
+      if(data.data.success) {
+        setSelectedImages([]);
+        setConfirmationMessage(null)
+        setComment(null);
+
+        setTimeout(() => {
+          navigation.navigate('Home');
+        }, 500);
       }
+    } catch (error) {
+        console.error(error.data);
+    }
   };
 
   const Button2 = ({ label, onPress }) => (
-    <UI.Pressable style={[styles.button, { height: '8%', justifyContent: 'center', alignItems: 'center' }]} onPress={onPress}>
+    <UI.Pressable style={[styles.button, { height: '8%', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#fff' }]} onPress={onPress}>
       <UI.Text style={styles.text}>{label}</UI.Text>
     </UI.Pressable>
   );

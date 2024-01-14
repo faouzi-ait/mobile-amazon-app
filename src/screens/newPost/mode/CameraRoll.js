@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, FlatList, Image, KeyboardAvoidingView, TextInput, View, Text, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Modal from 'react-native-modal';
 
+import { StyleSheet, FlatList, Image, KeyboardAvoidingView, TextInput, View, Text, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Button } from '../../../components'; 
+
 import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
 
 import * as MediaLibrary from 'expo-media-library';
+
+import { compressedImage } from '../../../utils'
 
 const CameraRollScreen = ({ navigation , color }) => {
   const [photos, setPhotos] = useState([]);
@@ -56,12 +59,13 @@ const CameraRollScreen = ({ navigation , color }) => {
     setIsLoading(true);
     
     const asset = await MediaLibrary.getAssetInfoAsync(selectedImage?.id, {})
+    const file = await compressedImage(asset.localUri);
     
     try {
       const body = new FormData();
       body.append('post', post);
       body.append('image', {
-        uri:  asset.localUri,
+        uri:  file.uri,
         type: 'image/jpeg',
         name: 'photo.jpg',
       });
@@ -227,6 +231,8 @@ const styles = StyleSheet.create({
     marginTop: '3%',
     padding: '3%',
     borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#fff',
     backgroundColor: 'black',
   },
   upload: {

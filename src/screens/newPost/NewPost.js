@@ -11,7 +11,6 @@ import CameraRoll from './mode/CameraRoll'
 
 import { selectedTheme, currentUser, loggedInStatus } from '../../redux/slices/selectors';
 
-
 export const NewPost = ({ navigation }) => {
   const [mode, setMode] = useState('lib');
   const theme = useSelector(selectedTheme);
@@ -67,12 +66,14 @@ export const NewPost = ({ navigation }) => {
 const styles = UI.StyleSheet.create({
   modeContainer: { 
     flexDirection: 'row', 
-    justifyContent: 'center', 
-    marginBottom: '2%' 
+    justifyContent: 'space-between', 
+    marginBottom: '5%' 
   },
   modeContainerMargin: {
-    marginLeft: 3,
-    marginRight: 3
+    marginLeft: 1,
+    marginRight: 1,
+    borderWidth: 1, 
+    borderColor: '#fff',
   },
   button: {
     alignItems: 'center',

@@ -1,3 +1,5 @@
+import * as ImageManipulator from 'expo-image-manipulator';
+
 export const lightStyles = {
   borderColor: '#000',
   color: '#000',
@@ -25,3 +27,5 @@ export const displayMessage = (searchTerm, data) => {
     return ''
   }
 }
+
+export const compressedImage = async (url) => await ImageManipulator.manipulateAsync(url, [], { compress: 0.25 });
