@@ -8,6 +8,7 @@ import PostComments from './items/postComment/PostComment'
 import PostDetails from './items/postDetails/PostDetails'
 import PostActions from './items/postActions/PostActions'
 import Debounce from './items/debounce/Debounce'
+import Loader from './items/loader/Loader'
 
 export { 
     ThemeProvider, 
@@ -20,4 +21,5 @@ export {
     PostDetails, 
     PostActions,
     Debounce,
+    Loader,
 }

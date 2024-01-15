@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 
 import { StyleSheet, FlatList, Image, KeyboardAvoidingView, TextInput, View, Text, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Button } from '../../../components'; 
+import { Button, Loader } from '../../../components'; 
 
 import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
 
@@ -16,8 +16,7 @@ const CameraRollScreen = ({ navigation , color }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [createPost, { data, error }] = useCreatePostMutation();
+  const [createPost, { data, error, isLoading }] = useCreatePostMutation();
 
   useEffect(() => {
     fetchPhotos();
@@ -53,10 +52,9 @@ const CameraRollScreen = ({ navigation , color }) => {
 
   const uploadImages = async () => {
     if (!selectedImage || !post) {
-      alert(`Please select an image and a caption to upload`);
+      alert(`Please specify a caption`);
       return false;
     }
-    setIsLoading(true);
     
     const asset = await MediaLibrary.getAssetInfoAsync(selectedImage?.id, {})
     const file = await compressedImage(asset.localUri);
@@ -78,50 +76,44 @@ const CameraRollScreen = ({ navigation , color }) => {
         navigation.navigate('Home');
       }
       
-      setIsLoading(false)
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsLoading(false)
     }
 };
 
 if(isModalVisible) {
   return (
-    <Modal
-      transparent={true}
-      animationType="slide"
-      visible={isModalVisible}
-      swipeDirection="down"
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
-      onRequestClose={() => setModalVisible(false)}
-      onSwipeComplete={() => setModalVisible(false)}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Image source={{ uri: selectedImage?.uri }} style={[styles.selectedImage, styles.modalImage ]} />
-              <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : 'height'}>
-                <TextInput
-                  value={post}
-                  style={[styles.commentSection, styles.commentFormat]}
-                  placeholderTextColor='black'
-                  placeholder="Add a caption"
-                  onChangeText={(text) => setComment(text)}
-                />
-              </KeyboardAvoidingView>
-              <Button label={`${isLoading ? 'Posting...' : 'Send Post'}`} style={styles.button} textStyle={styles.text} onPress={uploadImages} disabled={isLoading} />
-          </View>
-        </View>
-    </Modal>
-  )
-}
-
-if(isLoading) {
-  return (
-    <View style={styles.upload}>
-      <ActivityIndicator size="large" color="rgba(255, 255, 255, 1)" />
-      <Text style={{ color: 'white' }}>Uploading Post...</Text>
-    </View>
+    <>
+      {!isLoading ? 
+        <Modal
+          transparent={true}
+          animationType="slide"
+          visible={isModalVisible}
+          swipeDirection="down"
+          animationIn="slideInUp"
+          animationOut="slideOutDown"
+          onRequestClose={() => setModalVisible(false)}
+          onSwipeComplete={() => setModalVisible(false)}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Image source={{ uri: selectedImage?.uri }} style={[styles.selectedImage, styles.modalImage ]} />
+                  <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : 'height'}>
+                    <TextInput
+                      value={post}
+                      style={[styles.commentSection, styles.commentFormat]}
+                      placeholderTextColor='black'
+                      placeholder="Add a caption"
+                      onChangeText={(text) => setComment(text)}
+                    />
+                  </KeyboardAvoidingView>
+                  <Button label={`${isLoading ? 'Posting...' : 'Send Post'}`} style={styles.button} textStyle={styles.text} onPress={uploadImages} disabled={isLoading} />
+              </View>
+            </View>
+        </Modal>
+      :
+        <Loader />
+      }
+    </>
   )
 }
 

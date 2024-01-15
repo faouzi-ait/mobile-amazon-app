@@ -1,10 +1,12 @@
-import { StyleSheet ,Text, View, Pressable, TextInput, Image, SafeAreaView, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet ,Text, View, Pressable, TextInput, Image, SafeAreaView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import { shareAsync } from 'expo-sharing';
 import { Camera } from 'expo-camera';
 
 import { Ionicons } from "@expo/vector-icons";
+import { Loader } from '../../../components'; 
+
 import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
 
 import { compressedImage } from '../../../utils'
@@ -13,10 +15,10 @@ export const CameraCmp = ({ navigation }) => {
     const cameraRef = useRef();
     const [camImage, setCamImage] = useState(null);
     const [comment, setComment] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
-    const [createPost, { data, error }] = useCreatePostMutation();
+    const [createPost, { data, error, isLoading }] = useCreatePostMutation();
 
   useEffect(() => {
     (async () => {
@@ -62,7 +64,7 @@ export const CameraCmp = ({ navigation }) => {
         name: 'photo.jpg',
       });
 
-      // const resp = await createPost(body).unwrap();
+      const resp = await createPost(body).unwrap();
 
       if(resp?.success) {
         setComment(null);
@@ -83,23 +85,29 @@ export const CameraCmp = ({ navigation }) => {
   if (camImage) {
     return (
       <>
-        <SafeAreaView style={styles.imageContainer}>
-          <Image style={styles.preview} source={{ uri: 'data:image/jpg;base64,' + camImage.base64 }} />
-          <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{ width: "100%" }}>
-              <TextInput
-                value={comment}
-                style={styles.commentSection}
-                onChangeText={(text) => setComment(text)}
-                placeholder="What's your story?"
-                placeholderTextColor='#fff'
-              />
-          </KeyboardAvoidingView>
-        </SafeAreaView>
-        <View style={styles.modeContainer}>
-          <Button label="Share" onPress={sharePic}/>
-          {hasMediaLibraryPermission ? <Button label={"Post"} onPress={uploadPost} /> : undefined}
-          <Button label="Discard" onPress={() => setCamImage(undefined)} />
-        </View>
+        {!isLoading ? 
+        <>
+          <SafeAreaView style={styles.imageContainer}>
+            <Image style={styles.preview} source={{ uri: 'data:image/jpg;base64,' + camImage.base64 }} />
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{ width: "100%" }}>
+                <TextInput
+                  value={comment}
+                  style={styles.commentSection}
+                  onChangeText={(text) => setComment(text)}
+                  placeholder="What's your story?"
+                  placeholderTextColor='#fff'
+                />
+            </KeyboardAvoidingView>
+          </SafeAreaView>
+          <View style={styles.modeContainer}>
+            <Button label="Share" onPress={sharePic}/>
+            {hasMediaLibraryPermission ? <Button label={"Post"} onPress={uploadPost} /> : undefined}
+            <Button label="Discard" onPress={() => setCamImage(undefined)} />
+          </View>
+        </>
+        :
+          <Loader />
+        }
       </>
     );
   }

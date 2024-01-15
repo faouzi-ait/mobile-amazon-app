@@ -54,9 +54,9 @@ export const NewPost = ({ navigation }) => {
   return (
       <ThemeProvider>
         <UI.View style={styles.modeContainer}>
-          <Button mode='lib' label="library" />
-          <Button mode='roll' label="roll" />
-          <Button mode='cam' label="camera" />
+          <Button mode='lib' label="Library" />
+          <Button mode='roll' label="Roll" />
+          <Button mode='cam' label="Camera" />
         </UI.View>
         {switchMode(mode)}
       </ThemeProvider>

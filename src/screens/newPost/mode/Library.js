@@ -2,7 +2,7 @@ import * as UI from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
-import { ThemeProvider, Button } from '../../../components'; 
+import { ThemeProvider, Button, Loader } from '../../../components'; 
 
 import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
 
@@ -14,7 +14,6 @@ export const NewPost = ({ navigation }) => {
   const [confirmationMessage, setConfirmationMessage] = useState('');
 
   const [createPost, { data, error, isLoading }] = useCreatePostMutation();
-  // const [upload, { data, error, isLoading }] = useUploadMutation();
 
   useEffect(() => {
     requestPermission();
@@ -54,7 +53,7 @@ export const NewPost = ({ navigation }) => {
 
   const uploadImages = async () => {
     if (!selectedImages || !post) {
-      alert(`Please select an image and a caption to upload`);
+      alert(`Please specify a caption`);
       return false;
     }
 
@@ -75,10 +74,7 @@ export const NewPost = ({ navigation }) => {
         setSelectedImages([]);
         setConfirmationMessage(null)
         setComment(null);
-
-        setTimeout(() => {
-          navigation.navigate('Home');
-        }, 500);
+        navigation.navigate('Home');
       }
     } catch (error) {
         console.error(error.data);
@@ -114,7 +110,6 @@ export const NewPost = ({ navigation }) => {
                   </UI.TouchableOpacity>
               ))}
 
-
               {selectedImages.length !== 0 && <UI.KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : 'height'} style={{ width: '100%' }}>
                 <UI.TextInput
                   value={post}
@@ -126,7 +121,6 @@ export const NewPost = ({ navigation }) => {
                 <Button label={`${isLoading ? 'Posting...' : 'Create Post'}`} style={styles.button2} textStyle={styles.text2} onPress={uploadImages} disabled={isLoading} />
               </UI.KeyboardAvoidingView>}
 
-
               {confirmationMessage && (
                 <UI.View style={styles.upload}>
                   <UI.Text style={{ color: 'white' }}>{confirmationMessage}</UI.Text>
@@ -134,10 +128,7 @@ export const NewPost = ({ navigation }) => {
               )}
             </UI.View>
             :
-            <UI.View style={styles.upload}>
-              <UI.ActivityIndicator size="large" color="rgba(255, 255, 255, 1)" />
-              <UI.Text style={{ color: 'white', marginTop: 2 }}>Uploading Post...</UI.Text>
-            </UI.View>
+            <Loader />
           }
       </ThemeProvider>
   )
