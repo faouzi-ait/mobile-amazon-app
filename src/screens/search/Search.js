@@ -40,6 +40,8 @@ export const Search = ({ navigation }) => {
   const isDark = theme === 'dark'
   const color = isDark ? '#fff' : '#000'
 
+  const currentDisplayedPost = data?.items?.filter(item => item?._id === currentPost?._id);
+
   const onRefresh = async () => {
     setRefreshing(true);
     try {
@@ -56,14 +58,15 @@ export const Search = ({ navigation }) => {
         alert('Please write a comment to post');
         return;
     }
-    createReview({
+
+    await createReview({
         rating: 0,
         postID: currentPost._id,
         comment: commentRef.current.value
     });
-
-    commentRef.current.value = null
+    commentRef.current.value = null;
   }
+
 
   return (
     <CP.ThemeProvider>
@@ -124,8 +127,8 @@ export const Search = ({ navigation }) => {
           </UI.View>
 
           <UI.View style={localStyles.postDetail}>
-            <CP.PostActions data={currentPost} userId={userId} color={color} isLoggedIn={isLoggedIn} navigation={navigation} setModalVisible={setModalVisible} />
-            <CP.PostDetails data={currentPost} userId={userId} color={color} />
+            <CP.PostActions data={currentDisplayedPost[0]} userId={userId} color={color} isLoggedIn={isLoggedIn} navigation={navigation} setModalVisible={setModalVisible} />
+            <CP.PostDetails data={currentDisplayedPost[0]} userId={userId} color={color} />
           </UI.View>
           
           <UI.View style={styles.reviewsSectionLayout}>

@@ -10,6 +10,8 @@ export const darkStyles = {
   color: '#fff',
 }
 
+export const isOwnerPost = (data, userId) => data?.user === userId;
+
 export const isLiked = (data, userId) => data?.likes?.includes(userId);
 
 export const isFavorites = (data, userId) => data?.favorites?.includes(userId);

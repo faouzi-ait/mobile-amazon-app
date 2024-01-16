@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import * as UI from 'react-native'
 import React from 'react'
 
 const Loader = () => {
@@ -10,17 +10,17 @@ const Loader = () => {
   )
 }
 
-const styles = StyleSheet.create({
-    upload: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '75%',
-        color: 'white'
-    },
-    label: {
-        color: 'white', 
-        marginTop: 2,
-    }
+const styles = UI.StyleSheet.create({
+  upload: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '75%',
+      color: 'white'
+  },
+  label: {
+      color: 'white', 
+      marginTop: 2,
+  }
 });
 
 export default Loader;

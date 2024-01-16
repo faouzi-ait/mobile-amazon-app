@@ -8,12 +8,12 @@ export const apiPostListing = apiSlice.injectEndpoints({
               const queryParams = new URLSearchParams({ q: searchTerm, page, pageSize });
               return `/listing-posts?${queryParams.toString()}`;
             },
-            providesTags: ['Posts'],
+            providesTags: ['Posts', 'Search'],
             keepUnusedDataFor: 1,
         }),
         getSinglePost: builder.query({
             query: (id) => `/single-post/${id}`,
-            providesTags: ['Post'],
+            providesTags: ['Post', 'Search'],
             keepUnusedDataFor: 1,
         }),
         likePost: builder.mutation({
@@ -21,7 +21,7 @@ export const apiPostListing = apiSlice.injectEndpoints({
                 url: `/like-post/${id}`,
                 method: 'POST',
             }),
-            invalidatesTags: ['Post'],
+            invalidatesTags: ['Post', 'Search'],
         }),
         createPost: builder.mutation({
             query: (body) => ({
@@ -31,12 +31,19 @@ export const apiPostListing = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Post'],
         }),
+        deletePost: builder.mutation({
+            query: (id) => ({
+                url: `/delete-posts/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Post', 'Search'],
+        }),
         favoritePost: builder.mutation({
             query: (id) => ({
                 url: `/favorite-post/${id}`,
                 method: 'POST',
             }),
-            invalidatesTags: ['Post'],
+            invalidatesTags: ['Post', 'Search'],
         }),
         createReview: builder.mutation({
             query: (body) => ({
@@ -44,7 +51,7 @@ export const apiPostListing = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body,
             }),
-            invalidatesTags: ['Post'],
+            invalidatesTags: ['Post', 'Search'],
           }),
         userFavoritePost: builder.mutation({
             query: (id) => ({
@@ -58,7 +65,7 @@ export const apiPostListing = apiSlice.injectEndpoints({
                 url: `/viewed-post/${id}`,
                 method: 'POST',
             }),
-            invalidatesTags: ['Post'],
+            invalidatesTags: ['Post', 'Search'],
         }),
     }),
     onError: (error /*, { dispatch, getState }*/) => {
@@ -66,4 +73,4 @@ export const apiPostListing = apiSlice.injectEndpoints({
     },
 })
 
-export const { useGetPostsQuery, useGetSinglePostQuery, useGetSinglePostDataQuery,  useCreatePostMutation, useCreateReviewMutation, useLikePostMutation, useViewedPostMutation, useFavoritePostMutation, useUserFavoritePostMutation } = apiPostListing
+export const { useGetPostsQuery, useGetSinglePostQuery, useGetSinglePostDataQuery,  useCreatePostMutation, useCreateReviewMutation, useDeletePostMutation, useLikePostMutation, useViewedPostMutation, useFavoritePostMutation, useUserFavoritePostMutation } = apiPostListing

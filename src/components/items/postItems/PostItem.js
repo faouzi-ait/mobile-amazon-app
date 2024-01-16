@@ -26,8 +26,9 @@ const PostItem = ({ post, navigation }) => {
     
     const postUser = useGetUserQuery(post.user);
     const loggedInUserPhoto = useGetUserPhotoQuery(userId);
-    const [createReview, infos] = api.useCreateReviewMutation();
     const { data, error, isLoading } = api.useGetSinglePostQuery(post._id);
+    const [createReview, infos] = api.useCreateReviewMutation();
+    // const [deletePost, status] = api.useDeletePostMutation();
     
     const isDark = theme === 'dark'
     const color = isDark ? '#fff' : '#000'

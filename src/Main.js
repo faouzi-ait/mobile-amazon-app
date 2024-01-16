@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Ionicons } from "@expo/vector-icons";
 
@@ -38,25 +38,25 @@ const Main = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Search') {
             iconName = focused ? 'ios-search' : 'ios-search-outline';
-          } else if (route.name === 'NewPost') {
+          } else if (route.name === 'Story') {
             iconName = focused ? 'md-add-circle' : 'md-add';
           } else if (route.name === 'Album') {
             iconName = focused ? 'ios-albums' : 'ios-albums-outline';
           } else if (route.name === 'User') {
             iconName = focused ? 'md-person' : 'md-person-outline';
           }
-          return <Ionicons name={iconName} size={route.name === 'NewPost' ? 40 : 24} color={color} />;
+          return <Ionicons name={iconName} size={route.name === 'Story' ? 34 : 20} color={color} />;
         },
         tabBarLabel: ({ focused, color }) => {
           return (
-            <></>
-            // <Text style={{ color }}>{route.name}</Text>
+            // <></>
+            <Text style={{ color: '#fff', fontSize: 13 }}>{route.name}</Text>
           );
         },
       })}>
           <Tab.Screen name="Home" component={Page.Home} options={{}} />
           <Tab.Screen name="Search" component={Page.Search} options={{}} />
-          <Tab.Screen name="NewPost" component={Page.NewPost} options={{}} />
+          <Tab.Screen name="Story" component={Page.NewPost} options={{}} />
           <Tab.Screen name="Album" component={Page.Album} options={{}} />
           <Tab.Screen name="User" component={Page.User} options={{}} />
       </Tab.Navigator>
