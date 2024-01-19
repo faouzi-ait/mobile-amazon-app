@@ -1,16 +1,14 @@
 import React from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { styles } from '../postItems/styles'
 
 const PostComments = ({ isLoggedIn, loggedInUserPhoto, commentRef, color, infos, sendComment }) => {
-  
   return (
     <>
       {isLoggedIn && (
         <View style={styles.postCommentLayout}>
-          <Image source={{ uri: loggedInUserPhoto?.data?.photo }} style={styles.postCommentImage} />
+          <Image source={{ uri: loggedInUserPhoto?.currentData?.photo }} style={styles.postCommentImage} />
           {isLoggedIn && <TextInput
             ref={commentRef}
             onChangeText={(text) => {
@@ -33,15 +31,6 @@ const PostComments = ({ isLoggedIn, loggedInUserPhoto, commentRef, color, infos,
       )}
     </>
   );
-};
-
-PostComments.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  loggedInUserPhoto: PropTypes.object, 
-  commentRef: PropTypes.object.isRequired,
-  color: PropTypes.string.isRequired,
-  infos: PropTypes.object.isRequired,
-  sendComment: PropTypes.func.isRequired,
 };
 
 export default PostComments;

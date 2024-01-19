@@ -68,7 +68,7 @@ export const Login = ({ navigation }) => {
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
           />
-        {error && <Text>{error?.data?.error}</Text>}
+        {error && <Text style={{ color: 'red', fontWeight: 'bold' }}>{error?.data?.error}</Text>}
         <Button title="Login" onPress={handleLogin} />
 
         <View style={styles.btnContainer}>

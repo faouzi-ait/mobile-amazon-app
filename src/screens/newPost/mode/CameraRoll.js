@@ -1,7 +1,8 @@
+// import { StyleSheet, FlatList, Image, KeyboardAvoidingView, TextInput, View, Dimensions, TouchableOpacity } from 'react-native';
+import * as UI from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-native-modal';
 
-import { StyleSheet, FlatList, Image, KeyboardAvoidingView, TextInput, View, Text, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Button, Loader } from '../../../components'; 
 
 import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
@@ -10,7 +11,7 @@ import * as MediaLibrary from 'expo-media-library';
 
 import { compressedImage } from '../../../utils'
 
-const CameraRollScreen = ({ navigation , color }) => {
+const CameraRollScreen = ({ navigation, mode }) => {
   const [photos, setPhotos] = useState([]);
   const [post, setComment] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -94,65 +95,61 @@ if(isModalVisible) {
           animationOut="slideOutDown"
           onRequestClose={() => setModalVisible(false)}
           onSwipeComplete={() => setModalVisible(false)}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Image source={{ uri: selectedImage?.uri }} style={[styles.selectedImage, styles.modalImage ]} />
-                  <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : 'height'}>
-                    <TextInput
+            <UI.View style={styles.modalContainer}>
+              <UI.View style={styles.modalContent}>
+                <UI.Image source={{ uri: selectedImage?.uri }} style={[styles.selectedImage, styles.modalImage ]} />
+                  <UI.KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : 'height'}>
+                    <UI.TextInput
                       value={post}
                       style={[styles.commentSection, styles.commentFormat]}
                       placeholderTextColor='black'
                       placeholder="Add a caption"
                       onChangeText={(text) => setComment(text)}
                     />
-                  </KeyboardAvoidingView>
-                  <Button label={`${isLoading ? 'Posting...' : 'Send Post'}`} style={styles.button} textStyle={styles.text} onPress={uploadImages} disabled={isLoading} />
-              </View>
-            </View>
-        </Modal>
-      :
-        <Loader />
-      }
+                  </UI.KeyboardAvoidingView>
+                  <Button label={`${isLoading ? 'Posting...' : 'Send Post'}`} style={[styles.button, { alignItems: 'center' }]} textStyle='#fff' onPress={uploadImages} disabled={isLoading} />
+              </UI.View>
+            </UI.View>
+        </Modal> : <Loader />}
     </>
-  )
-}
+)}
 
 return (
     <>
-      <View style={styles.container}>
-        <View style={styles.layout}>
+      <UI.View style={styles.container}>
+        <UI.View style={styles.layout}>
             {selectedImage && (
-              <View style={styles.selectedImageContainer}>
-                  <Image source={{ uri: selectedImage.uri }} style={styles.selectedImage} />
-              </View>
+              <UI.View style={styles.selectedImageContainer}>
+                  <UI.Image source={{ uri: selectedImage.uri }} style={styles.selectedImage} />
+              </UI.View>
             )}
-          <View style={styles.modalButton}>
-            <Button label="Select this picture" style={styles.button} textStyle={{ color, fontWeight: 'bold' }} onPress={() => setModalVisible(true)} />
-          </View>
-        </View>
-      </View>
-      <View style={{ height: '40%' }}>
-        <FlatList
+          <UI.View style={styles.modalButton}>
+            <Button label="Select this picture" style={styles.button} onPress={() => setModalVisible(true)} />
+          </UI.View>
+        </UI.View>
+      </UI.View>
+      <UI.View style={{ height: '40%' }}>
+        <UI.FlatList
           data={photos}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => setSelectedImage(item)}>
-              <Image source={{ uri: item.uri }} style={styles.photo} />
-            </TouchableOpacity>
+            <UI.TouchableOpacity onPress={() => setSelectedImage(item)}>
+              <UI.Image source={{ uri: item.uri }} style={styles.photo} />
+            </UI.TouchableOpacity>
           )}
           numColumns={4}
           onEndReached={fetchPhotos}
           onEndReachedThreshold={0.1}
         />
-      </View>
+      </UI.View>
     </>
   );
 };
 
-const { width } = Dimensions.get('window');
+const { width } = UI.Dimensions.get('window');
 const itemSize = width / 4;
 
-const styles = StyleSheet.create({
+const styles = UI.StyleSheet.create({
   modalContainer: {
     flex: 1,
     position: 'relative',

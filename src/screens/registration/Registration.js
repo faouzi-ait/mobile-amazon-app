@@ -52,7 +52,10 @@ export const Registration = ({ navigation }) => {
     const body = new FormData();
     const { firstname, lastname, phone, username, password } = formData;
     
-    // if(!username || !password) return false; // Quick validation to avoid app
+    if(!username || !password) { // Quick validation to avoid app crashing
+      alert('Please check your informations');
+      return false; 
+    } 
     
     try {
       body.append('firstname', firstname);

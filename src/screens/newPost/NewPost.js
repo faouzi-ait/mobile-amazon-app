@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 import * as ImagePicker from 'expo-image-picker';
 
-import { ThemeProvider, ToggleThemeButton } from '../../components'; 
+import Guard from '../route-guard/Guard'
 
-import Library from './mode/Library'
 import Camera from './mode/Camera'
+import Library from './mode/Library'
 import CameraRoll from './mode/CameraRoll'
 
+import { ThemeProvider, ToggleThemeButton, Button } from '../../components';
 import { selectedTheme, currentUser, loggedInStatus } from '../../redux/slices/selectors';
 
 export const NewPost = ({ navigation }) => {
@@ -35,30 +36,29 @@ export const NewPost = ({ navigation }) => {
   const switchMode = (mode) => {
     switch(mode) {
       case 'lib':
-        return <Library navigation={navigation} color={color} />
+        return <Library navigation={navigation} />
       case 'cam':
-        return <Camera navigation={navigation} color={color} />
+        return <Camera navigation={navigation} />
       case 'roll':
-        return <CameraRoll navigation={navigation} color={color} />
+        return <CameraRoll navigation={navigation} />
       default:
         return;
     }
   }
 
-  const Button = ({ mode, label }) => (
-    <UI.Pressable style={[styles.button, styles.modeContainerMargin]} onPress={() => setMode(mode)}>
-      <UI.Text style={styles.text}>{label}</UI.Text>
-    </UI.Pressable>
-  );
-
   return (
       <ThemeProvider>
-        <UI.View style={styles.modeContainer}>
-          <Button mode='lib' label="Library" />
-          <Button mode='roll' label="Roll" />
-          <Button mode='cam' label="Camera" />
-        </UI.View>
-        {switchMode(mode)}
+        {isLoggedIn ? 
+          <>
+            <UI.View style={styles.modeContainer}>
+              <Button style={[styles.button, styles.modeMargin, { backgroundColor: mode === 'lib' ? '#fff' : '#000' }]} textStyle={ mode === 'lib' ? '#000' : '#fff' } label="Library" onPress={() => setMode('lib')} />
+              <Button style={[styles.button, styles.modeMargin, { backgroundColor: mode === 'roll' ? '#fff' : '#000' }]} textStyle={ mode === 'roll' ? '#000' : '#fff' } label="Roll" onPress={() => setMode('roll')} />
+              <Button style={[styles.button, styles.modeMargin, { backgroundColor: mode === 'cam' ? '#fff' : '#000' }]} textStyle={ mode === 'cam' ? '#000' : '#fff' } label="Camera" onPress={() => setMode('cam')} />
+            </UI.View>
+            {switchMode(mode)}
+          </>
+          : <Guard navigation={navigation} message='New Story Screen' />
+        }
       </ThemeProvider>
   )
 }
@@ -69,11 +69,9 @@ const styles = UI.StyleSheet.create({
     justifyContent: 'space-between', 
     marginBottom: '5%' 
   },
-  modeContainerMargin: {
+  modeMargin: {
     marginLeft: 1,
     marginRight: 1,
-    borderWidth: 1, 
-    borderColor: '#fff',
   },
   button: {
     alignItems: 'center',
@@ -82,7 +80,12 @@ const styles = UI.StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'black',
+    borderWidth: 1, 
+    borderColor: '#fff',
+  },
+  active: {
+    color: '#fff',
+    backgroundColor: '#000'
   },
   text: {
     fontSize: 16,

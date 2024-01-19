@@ -26,9 +26,11 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
   getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [PER.FLUSH, PER.REHYDRATE, PER.PAUSE, PER.PERSIST, PER.PURGE, PER.REGISTER],
-    },
+    immutableCheck: false,
+    serializableCheck: false,
+    // serializableCheck: {
+    //   ignoredActions: [PER.FLUSH, PER.REHYDRATE, PER.PAUSE, PER.PERSIST, PER.PURGE, PER.REGISTER],
+    // },
   }).concat([apiSlice.middleware, apiPostListing.middleware, uploadApi.middleware]),
 });
 

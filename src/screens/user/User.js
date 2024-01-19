@@ -22,13 +22,10 @@ export const User = ({ navigation }) => {
   return (
     <ThemeProvider>
       <ToggleThemeButton />
-
-        <Button label="Go to Post Details" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('PostDetails')} />
-
         {auth && <Button label="Logout" style={styles.button} textStyle={styles.text} onPress={onLogout} />}
         
         {auth  && <Button label="Go to Home" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Home')} />}
-        {auth  && <Button label="Go to Album" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Album')} />}
+        {auth  && <Button label="Create a new Story" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Story')} />}
         {auth && <Button label="Go to Favorites" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Favorites')} />}
         
         {!auth && <Button label="Go to Login" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Login')} />}

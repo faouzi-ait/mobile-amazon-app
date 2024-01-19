@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native'
+import { View, Text, Image, ScrollView } from 'react-native'
 import React from 'react'
 
 import { useGetUserPhotoQuery } from '../../../redux/apiServices/authApi';
@@ -7,7 +7,6 @@ import { styles } from './styles'
 
 const ReviewList = ({ review, color }) => {
     const reviewPhoto = useGetUserPhotoQuery(review.user);
-    
     return (
         <ScrollView>
             <View style={styles.reviewList}>
@@ -20,7 +19,5 @@ const ReviewList = ({ review, color }) => {
         </ScrollView>
     )
 }
-
-
 
 export default ReviewList

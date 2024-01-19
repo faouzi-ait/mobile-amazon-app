@@ -7,13 +7,10 @@ import { setCredentials, setLogout } from '../slices/authSlice';
 
 import { BASE_API_URL } from '@env'
 
-console.log(BASE_API_URL);
-
 const baseQuery = fetchBaseQuery({
     mode: "cors",
     credentials: 'include',
     baseUrl: BASE_API_URL,
-    tagTypes: ['User', 'Images', 'Posts', 'Post'],
     extractRehydrationInfo(action, { reducerPath }) {
         if (action.type === REHYDRATE) {
             return action.payload[reducerPath]
@@ -24,7 +21,6 @@ const baseQuery = fetchBaseQuery({
     },
     prepareHeaders: async (headers) => {
         const token = await AsyncStorage.getItem('token');
-        // headers.set('Content-Type', 'multipart/form-data');
 
         if(token) {
             headers.set('Authorization', `Bearer ${token}`);
@@ -36,29 +32,23 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReAuth = async (args, api, extraOptions) => {
     const result = await baseQuery(args, api, extraOptions);
   
-    console.log('REFRESHING TOKEN.......');
     if (result?.error?.status === 401 || result?.error?.status === 403) {
       try {
-        console.log('GETTING TOKEN FROM STORAGE.......');
         const refreshToken = await AsyncStorage.getItem('refreshToken');
 
         if (refreshToken) {
-            console.log('GETTING NEW TOKEN USING REFRESH TOKEN.......');
             const { data } = await axios.post(`${BASE_API_URL}/refresh-token`, {
                 refreshToken,
             });
             
             if (data) { // Updates the stored token and credentials
-                console.log('ADDING NEW TOKENS IN STORAGE.......');
                 const { token, newRefreshToken, user } = data;
                 
                 await AsyncStorage.setItem('token', token);
                 await AsyncStorage.setItem('refreshToken', newRefreshToken);
 
-                console.log('ADDING NEW CREDENTIALS IN REDUCERS.......');
                 api.dispatch(setCredentials({ user, accessToken: { token, refreshToken: newRefreshToken }}));
                 
-                console.log('RESENDING ORIGINAL QUERY.......');
                 return baseQuery(args, api, extraOptions); // Retry the original query
             }
         }

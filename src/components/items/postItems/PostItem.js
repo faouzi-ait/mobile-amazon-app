@@ -20,15 +20,14 @@ const PostItem = ({ post, navigation }) => {
     const [isModalVisible, setModalVisible] = useState(false);
     let commentRef = useRef(null);
 
-    const userId = useSelector(currentUser);
     const theme = useSelector(selectedTheme);
+    const userId = useSelector(currentUser);
     const { isLoggedIn } = useSelector(loggedInStatus);
     
     const postUser = useGetUserQuery(post.user);
     const loggedInUserPhoto = useGetUserPhotoQuery(userId);
     const { data, error, isLoading } = api.useGetSinglePostQuery(post._id);
     const [createReview, infos] = api.useCreateReviewMutation();
-    // const [deletePost, status] = api.useDeletePostMutation();
     
     const isDark = theme === 'dark'
     const color = isDark ? '#fff' : '#000'
@@ -43,7 +42,6 @@ const PostItem = ({ post, navigation }) => {
             postID: data.post._id,
             comment: commentRef.current.value
         });
-
         commentRef.current.value = null
     }
 
@@ -51,7 +49,6 @@ const PostItem = ({ post, navigation }) => {
         <>
             {!isModalVisible ? (
                 <View style={styles.postContainer}>
-
                     <TouchableOpacity onPress={() => setModalVisible(true)} style={{ position: 'relative' }}>
                         <View style={styles.postLayout}>
                             <Image source={{ uri: postUser?.data?.user?.photo }} style={styles.postPhoto} />
@@ -66,7 +63,7 @@ const PostItem = ({ post, navigation }) => {
                     <PostDetails data={data?.post} userId={userId} color={color} />
                     <PostComments isLoggedIn={isLoggedIn} loggedInUserPhoto={loggedInUserPhoto} commentRef={commentRef} color={color} infos={infos} sendComment={sendComment} />
                 </View>) 
-                : 
+                :
                 <Modal isVisible={isModalVisible} setModalVisible={setModalVisible} postID={data?.post?._id}>
                     <View style={{ position: 'relative' }}>
                         <View style={styles.postImageLayout}>

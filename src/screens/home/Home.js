@@ -1,4 +1,4 @@
-import { FlatList, View, Text, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider, PostItem } from '../../components';
 import { useGetPostsQuery } from '../../redux/apiServices/postsApi';

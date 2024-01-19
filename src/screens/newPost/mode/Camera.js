@@ -5,7 +5,7 @@ import { shareAsync } from 'expo-sharing';
 import { Camera } from 'expo-camera';
 
 import { Ionicons } from "@expo/vector-icons";
-import { Loader } from '../../../components'; 
+import { Loader, Button } from '../../../components'; 
 
 import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
 
@@ -15,7 +15,6 @@ export const CameraCmp = ({ navigation }) => {
     const cameraRef = useRef();
     const [camImage, setCamImage] = useState(null);
     const [comment, setComment] = useState(null);
-    // const [isLoading, setIsLoading] = useState(false);
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
     const [createPost, { data, error, isLoading }] = useCreatePostMutation();
@@ -76,12 +75,6 @@ export const CameraCmp = ({ navigation }) => {
     }
   }
 
-  const Button = ({ label, disabled, onPress, ...rest }) => (
-    <Pressable style={[styles.button, styles.modeContainerMargin]} onPress={onPress} disabled={disabled} {...rest}>
-      <Text style={styles.text}>{label}</Text>
-    </Pressable>
-  );
-
   if (camImage) {
     return (
       <>
@@ -100,9 +93,9 @@ export const CameraCmp = ({ navigation }) => {
             </KeyboardAvoidingView>
           </SafeAreaView>
           <View style={styles.modeContainer}>
-            <Button label="Share" onPress={sharePic}/>
-            {hasMediaLibraryPermission ? <Button label={"Post"} onPress={uploadPost} /> : undefined}
-            <Button label="Discard" onPress={() => setCamImage(undefined)} />
+            <Button style={[styles.button, styles.modeContainerMargin]} label="Share" onPress={sharePic} />
+            <Button style={[styles.button, styles.modeContainerMargin]} label="Post" onPress={uploadPost} />
+            <Button style={[styles.button, styles.modeContainerMargin]} label="Discard" onPress={() => setCamImage(undefined)} />
           </View>
         </>
         :
@@ -114,7 +107,7 @@ export const CameraCmp = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-        <Camera style={{flex: 1, alignItems: 'center' }} ref={cameraRef}>
+        <Camera style={{ flex: 1, alignItems: 'center' }} ref={cameraRef}>
             <View style={styles.buttonContainer2}>
                 <Ionicons name='ios-camera-outline' size={32} color='#fff' onPress={takePicture} />
             </View>
@@ -122,8 +115,6 @@ export const CameraCmp = ({ navigation }) => {
     </SafeAreaView>
   );
 }
-
-export default CameraCmp;
 
 export const styles = StyleSheet.create({
   modeContainer: {
@@ -196,3 +187,5 @@ export const styles = StyleSheet.create({
       color: 'white'
   },
 });
+
+export default CameraCmp;

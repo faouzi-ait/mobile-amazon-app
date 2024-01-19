@@ -8,7 +8,7 @@ import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
 
 import { compressedImage } from '../../../utils'
 
-export const NewPost = ({ navigation }) => {
+export const Library = ({ navigation }) => {
   const [post, setComment] = useState(null);
   const [selectedImages, setSelectedImages] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -81,18 +81,12 @@ export const NewPost = ({ navigation }) => {
     }
   };
 
-  const Button2 = ({ label, onPress }) => (
-    <UI.Pressable style={[styles.button, { height: '8%', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#fff' }]} onPress={onPress}>
-      <UI.Text style={styles.text}>{label}</UI.Text>
-    </UI.Pressable>
-  );
-
   const removeImage = (i) => setSelectedImages((img) => img.filter((_, index) => index !== i));
 
   return (
       <ThemeProvider>
         {selectedImages.length === 0 && (
-          <Button2 label="Select your Image" onPress={pickMultipleImages} />
+          <Button style={[styles.button, styles.format]} label="Select your Image" onPress={pickMultipleImages} />
         )}
 
         {!isLoading ? 
@@ -118,12 +112,12 @@ export const NewPost = ({ navigation }) => {
                   placeholder="Add a caption"
                   onChangeText={(text) => setComment(text)}
                 />
-                <Button label={`${isLoading ? 'Posting...' : 'Create Post'}`} style={styles.button2} textStyle={styles.text2} onPress={uploadImages} disabled={isLoading} />
+                <Button label={`${isLoading ? 'Posting...' : 'Create Post'}`} style={[styles.button2]} textStyle='#fff' onPress={uploadImages} disabled={isLoading} />
               </UI.KeyboardAvoidingView>}
 
               {confirmationMessage && (
                 <UI.View style={styles.upload}>
-                  <UI.Text style={{ color: 'white' }}>{confirmationMessage}</UI.Text>
+                  <UI.Text style={{ color: 'red' }}>{confirmationMessage}</UI.Text>
                 </UI.View>
               )}
             </UI.View>
@@ -170,14 +164,16 @@ const styles = UI.StyleSheet.create({
   },
   button2: {
     height: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'black',
-    justifyContent: 'center'
   },
-  text2: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 15,
-    fontWeight: 'bold',
+  format: { 
+    height: '8%', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    borderWidth: 1, 
+    borderColor: '#fff' 
   },
   postInput: { 
     color: 'white', 
@@ -202,4 +198,4 @@ const styles = UI.StyleSheet.create({
   },
 });
 
-export default NewPost;
+export default Library;
