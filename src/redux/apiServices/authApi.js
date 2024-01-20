@@ -16,9 +16,25 @@ export const authApi = apiSlice.injectEndpoints({
               body,
             }),
         }),
+        updateUserPhoto: builder.mutation({
+            query: (body) => ({
+              url: 'update-photo',
+              method: 'PUT',
+              body,
+            }),
+            invalidatesTags: [ 'User', 'Search', 'Photo'],
+        }),
+        updateUserDetails: builder.mutation({
+            query: (body) => ({
+              url: 'user-update',
+              method: 'PUT',
+              body,
+            }),
+            invalidatesTags: [ 'User', 'Search', 'Photo'],
+        }),
         getUserPhoto: builder.query({
             query: (id) => `/user-photo/${id}`,
-            providesTags: ['User'],
+            providesTags: ['Photo'],
             keepUnusedDataFor: 1,
         }),
         getUser: builder.query({
@@ -33,5 +49,7 @@ export const {
     useLoginMutation, 
     useCreateUserMutation, 
     useGetUserPhotoQuery, 
+    useUpdateUserPhotoMutation,
+    useUpdateUserDetailsMutation,
     useGetUserQuery 
 } = authApi

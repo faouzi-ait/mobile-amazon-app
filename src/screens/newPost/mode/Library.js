@@ -28,7 +28,7 @@ export const Library = ({ navigation }) => {
     }
   };
 
-  const pickMultipleImages = async () => {
+  const pickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -36,11 +36,9 @@ export const Library = ({ navigation }) => {
         allowsMultipleSelection: false,
       });
 
-
-      const sum = result.assets?.reduce((total, item) => total + item.fileSize, 0);
-      let fileSizeMB = sum / (1024 ** 2);
-
-      if (fileSizeMB > 5) return alert(`Total image size can not exceed 5MB`);
+      // const sum = result.assets?.reduce((total, item) => total + item.fileSize, 0);
+      // let fileSizeMB = sum / (1024 ** 2);
+      // if (fileSizeMB > 5) return alert(`Total image size can not exceed 5MB`);
 
       if (!result.canceled && result.assets) {
         const selectedImageURIs = result.assets.map((asset) => asset.uri);
@@ -86,7 +84,7 @@ export const Library = ({ navigation }) => {
   return (
       <ThemeProvider>
         {selectedImages.length === 0 && (
-          <Button style={[styles.button, styles.format]} label="Select your Image" onPress={pickMultipleImages} />
+          <Button style={[styles.button, styles.format]} label="Select your Image" onPress={pickImage} />
         )}
 
         {!isLoading ? 

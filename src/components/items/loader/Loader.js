@@ -5,7 +5,7 @@ const Loader = () => {
   return (
     <UI.View style={styles.upload}>
         <UI.ActivityIndicator size="large" color="rgba(255, 255, 255, 1)" />
-        <UI.Text style={styles.label}>Uploading Post...</UI.Text>
+        <UI.Text style={styles.label}>Uploading</UI.Text>
     </UI.View>
   )
 }

@@ -21,7 +21,7 @@ const PostActions = ({ data, userId, color, isLoggedIn, navigation, setModalVisi
                 { text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
                 { text: "Login", onPress: () => navigation.navigate("Login") }
             ], { cancelable: true }
-    );
+        );
 
     const displayDeleteBtn = (isLoading) => {
         if(!isLoading) {

@@ -87,7 +87,6 @@ export const Registration = ({ navigation }) => {
           overlayColor="rgba(255,255,255,0.75)"
           animationStyle={styles.lottie}
           speed={1}>
-            {/* <Text style={{ margin: 5 }}>Logging you in....</Text> */}
         </AnimatedLoader>
       </View>
     )}
@@ -99,8 +98,8 @@ export const Registration = ({ navigation }) => {
           {register.map((fieldName, i) => (
             <TextInput
               key={i}
-              placeholderTextColor={placeholderStyle}
-              style={[styles.input, inputStyle]}
+              placeholderTextColor={'#fff'}
+              style={[styles.input, darkStyles]}
               placeholder={fieldName}
               onChangeText={(text) => handleChange(fieldName, text)}
             />

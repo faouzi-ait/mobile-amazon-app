@@ -1,4 +1,5 @@
 import React from 'react'
+import { Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import Content from './tabs/content/Content'
@@ -17,7 +18,15 @@ const Album = ({ navigation }) => {
 
   return (
     <ThemeProvider>
-      {isLoggedIn ? <Content ids={currentData?.user?.favorite} navigation={navigation} /> : <Guard navigation={navigation} message='Favorites Screen' />}
+      {isLoggedIn ? 
+        currentData?.user?.favorite?.length ? 
+          <Content ids={currentData?.user?.favorite} navigation={navigation} /> 
+            : 
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: '#fff', fontSize: '15%' }}>No Favorites yet...</Text>
+          </View>
+      : 
+      <Guard navigation={navigation} message='Favorites Screen' />}
     </ThemeProvider>
   );
 };
