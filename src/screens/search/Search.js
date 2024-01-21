@@ -67,7 +67,6 @@ export const Search = ({ navigation }) => {
     commentRef.current.value = null;
   }
 
-
   return (
     <CP.ThemeProvider>
       {/* <ToggleThemeButton /> */}
@@ -83,9 +82,11 @@ export const Search = ({ navigation }) => {
               />
           </UI.View>
 
-          {!searchTerm && <UI.View style={localStyles.searchLabel}>
-            <UI.Text style={[localStyles.searchLabelFont, { color }]}>{displayMessage(searchTerm, data)}</UI.Text>
-          </UI.View>}
+          {!searchTerm && 
+            <UI.View style={localStyles.searchLabel}>
+              <UI.Text style={[localStyles.searchLabelFont, { color }]}>{displayMessage(searchTerm, data)}</UI.Text>
+            </UI.View>
+          }
 
           <UI.FlatList
             numColumns={3}
@@ -155,6 +156,7 @@ export const Search = ({ navigation }) => {
 
 const localStyles = UI.StyleSheet.create({
   container: {
+    marginBottom: 10,
     alignItems: 'center',
   },
   debounceStyle: {

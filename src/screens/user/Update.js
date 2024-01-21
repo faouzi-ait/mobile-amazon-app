@@ -16,7 +16,7 @@ import { setLogout } from '../../redux/slices/authSlice';
 
 import { compressedImage } from '../../utils'
 
-const Update = ({ navigation }) => {
+const Update = () => {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -55,10 +55,6 @@ const Update = ({ navigation }) => {
         allowsEditing: true,
         allowsMultipleSelection: false,
       });
-
-      // const sum = result.assets?.reduce((total, item) => total + item.fileSize, 0);
-      // let fileSizeMB = sum / (1024 ** 2);
-      // if (fileSizeMB > 5) return alert(`Total image size can not exceed 5MB`);
 
       if (!result.canceled && result.assets) {
         const selectedImageURIs = result.assets.map((asset) => asset.uri);
@@ -179,9 +175,6 @@ const Update = ({ navigation }) => {
           }} />
         </View>
       }
-      
-      {!auth && <Button label="Go to Login" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Login')} />}
-      {!auth && <Button label="Go to Registration" style={styles.button} textStyle={styles.text} onPress={() => navigation.navigate('Registration')} />}
     </ThemeProvider>
   );
 }

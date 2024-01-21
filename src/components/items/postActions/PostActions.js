@@ -49,7 +49,7 @@ const PostActions = ({ data, userId, color, isLoggedIn, navigation, setModalVisi
                     } else {
                         _userLoggeInAlert();
                     }
-            }}
+                }}
             />
         </View>
     )

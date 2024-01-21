@@ -9,16 +9,12 @@ import Camera from './mode/Camera'
 import Library from './mode/Library'
 import CameraRoll from './mode/CameraRoll'
 
-import { ThemeProvider, ToggleThemeButton, Button } from '../../components';
-import { selectedTheme, currentUser, loggedInStatus } from '../../redux/slices/selectors';
+import { ThemeProvider, Button } from '../../components';
+import { loggedInStatus } from '../../redux/slices/selectors';
 
 export const NewPost = ({ navigation }) => {
   const [mode, setMode] = useState('lib');
-  const theme = useSelector(selectedTheme);
   const { isLoggedIn } = useSelector(loggedInStatus);
-
-  const isDark = theme === 'dark'
-  const color = isDark ? '#fff' : '#000'
 
   useEffect(() => {
     requestPermission();
@@ -46,14 +42,25 @@ export const NewPost = ({ navigation }) => {
     }
   }
 
+  const getButtonStyles = (currentMode) => ({
+    button: [styles.button, styles.modeMargin, { backgroundColor: mode === currentMode ? '#fff' : '#000' }],
+    textStyle: mode === currentMode ? '#000' : '#fff',
+  });
+
+  const buttonLabels = [
+    { mode: 'lib', label: 'Library' },
+    { mode: 'roll', label: 'Roll' },
+    { mode: 'cam', label: 'Camera' },
+  ]
+
   return (
       <ThemeProvider>
         {isLoggedIn ? 
           <>
             <UI.View style={styles.modeContainer}>
-              <Button style={[styles.button, styles.modeMargin, { backgroundColor: mode === 'lib' ? '#fff' : '#000' }]} textStyle={ mode === 'lib' ? '#000' : '#fff' } label="Library" onPress={() => setMode('lib')} />
-              <Button style={[styles.button, styles.modeMargin, { backgroundColor: mode === 'roll' ? '#fff' : '#000' }]} textStyle={ mode === 'roll' ? '#000' : '#fff' } label="Roll" onPress={() => setMode('roll')} />
-              <Button style={[styles.button, styles.modeMargin, { backgroundColor: mode === 'cam' ? '#fff' : '#000' }]} textStyle={ mode === 'cam' ? '#000' : '#fff' } label="Camera" onPress={() => setMode('cam')} />
+              {buttonLabels.map(item => 
+                <Button style={getButtonStyles(item.mode).button} textStyle={getButtonStyles(item.mode).textStyle} label={item.label} onPress={() => setMode(item.mode)} />
+              )}
             </UI.View>
             {switchMode(mode)}
           </>

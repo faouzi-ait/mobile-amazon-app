@@ -75,7 +75,7 @@ export const Login = ({ navigation }) => {
           <Button title="Register" onPress={() => navigation.navigate('Registration')} />
           <Button title="Home Page" onPress={() => navigation.navigate('Home')} />
         </View>
-        <ToggleThemeButton />
+        {/* <ToggleThemeButton /> */}
       </View>
     </ThemeProvider>
   )

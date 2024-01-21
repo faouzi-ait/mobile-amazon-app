@@ -1,12 +1,10 @@
 import { View, TextInput, Button, Image, Text, ScrollView, Keyboard } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { useCreateUserMutation } from '../../redux/apiServices/authApi'
 
 import { ThemeProvider, ToggleThemeButton } from '../../components'; 
-import { selectedTheme } from '../../redux/slices/selectors';
 import { lightStyles, darkStyles } from '../../utils'
 
 import AnimatedLoader from 'react-native-animated-loader';
@@ -19,10 +17,6 @@ export const Registration = ({ navigation }) => {
   const [createUser, { data, error, isLoading }] = useCreateUserMutation();
   const [formData, setFormData] = useState({});
   const [image, setImage] = useState(null);
-  const theme = useSelector(selectedTheme);
-
-  const inputStyle = theme === 'dark' ? darkStyles : lightStyles;
-  const placeholderStyle = theme === 'dark' ? '#fff' : '#000';
 
   const handleChange = (fieldName, value) => {
     setFormData((prevData) => ({
@@ -89,7 +83,7 @@ export const Registration = ({ navigation }) => {
           speed={1}>
         </AnimatedLoader>
       </View>
-    )}
+  )}
 
   return (
     <ThemeProvider>
@@ -125,7 +119,7 @@ export const Registration = ({ navigation }) => {
             <Button title="Go to Login" onPress={() => navigation.navigate('Login')} />
             <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
           </View>
-        <ToggleThemeButton />
+        {/* <ToggleThemeButton /> */}
         </View>
       </ScrollView>
     </ThemeProvider>
