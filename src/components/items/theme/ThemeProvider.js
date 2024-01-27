@@ -6,7 +6,7 @@ import { selectedTheme } from '../../../redux/slices/selectors';
 
 const ThemeProvider = ({ children }) => {
   const themeType = useSelector(selectedTheme);
-  const theme = themeType === 'dark' ? { background: '#1B1212' } : { background: '#ffffff' };
+  const theme = themeType === 'light' ? { background: '#1B1212' } : { background: '#ffffff' };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>

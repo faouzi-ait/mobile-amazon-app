@@ -26,7 +26,8 @@ const Main = () => {
       <Tab.Navigator screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: theme === 'dark' ? '#000' : '#fff',
+          // backgroundColor: theme === 'dark' ? '#000' : '#fff',
+          backgroundColor: '#fff',
           paddingBottom: 17,
           height: 70,
         },
@@ -37,25 +38,24 @@ const Main = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Search') {
             iconName = focused ? 'ios-search' : 'ios-search-outline';
-          } else if (route.name === 'Story') {
-            iconName = focused ? 'md-add-circle' : 'md-add';
+          } else if (route.name === 'Cart') {
+            iconName = focused ? 'ios-cart' : 'ios-cart-outline';
           } else if (route.name === 'Favorites') {
             iconName = focused ? 'ios-albums' : 'ios-albums-outline';
           } else if (route.name === 'User') {
             iconName = focused ? 'md-person' : 'md-person-outline';
           }
-          return <Ionicons name={iconName} size={route.name === 'Story' ? 34 : 24} color={color} />;
+          return <Ionicons name={iconName} size={24} color={color} />;
         },
         tabBarLabel: ({ focused, color }) => {
           return (
-            <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'normal' }}>{route.name}</Text>
+            <Text style={{ color: '#000', fontSize: 12, fontWeight: 'normal' }}>{route.name}</Text>
           );
         },
       })}>
         <Tab.Screen name="Home" component={Page.Home} options={{}} />
         <Tab.Screen name="Search" component={Page.Search} options={{}} />
-        <Tab.Screen name="Story" component={Page.NewPost} options={{}} />
-        <Tab.Screen name="Favorites" component={Page.Album} options={{}} />
+        <Tab.Screen name="Cart" component={Page.NewPost} options={{}} />
         <Tab.Screen name="User" component={Page.User} options={{}} />
       </Tab.Navigator>
     );
@@ -65,7 +65,7 @@ const Main = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName={'Home'} screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Main" component={BottomTabNavigator} options={{}} />
-        {auth && <Stack.Screen name="Favorites" component={Page.Favorites} options={{}} />}
+        {/* {auth && <Stack.Screen name="Favorites" component={Page.Favorites} options={{}} />} */}
         {!auth && <Stack.Screen name="Login" component={Page.Login} options={{}} />}
         {!auth && <Stack.Screen name="Registration" component={Page.Registration} options={{}} />}
       </Stack.Navigator>

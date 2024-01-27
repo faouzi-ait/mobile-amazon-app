@@ -1,7 +1,12 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
+
+const dimensions = Dimensions.get('window');   
+const imageWidth = dimensions.width;
+const imageHeight = dimensions.height;
 
 export const styles = StyleSheet.create({
     postContainer: {
+        flex: 1,
         marginBottom: 20,
         paddingLeft: 10,
         paddingRight: 10,
@@ -31,8 +36,8 @@ export const styles = StyleSheet.create({
         color: '#fff' 
     },
     postImage: {
-        width: '100%',
-        height: 300,
+        width: imageWidth - 16,
+        height: imageHeight - 127
     },
     postInfo: {
         flexDirection: 'row',

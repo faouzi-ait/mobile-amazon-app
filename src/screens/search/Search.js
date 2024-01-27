@@ -1,5 +1,5 @@
 import * as UI from 'react-native'
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import * as CP from '../../components';
@@ -9,14 +9,14 @@ import { useGetUserPhotoQuery, useGetUserQuery } from '../../redux/apiServices/a
 
 import * as api from '../../redux/apiServices/postsApi';
 
-import { displayMessage } from '../../utils'
+// import { displayMessage } from '../../utils'
 
-import { styles } from '../../components/items/postItems/styles'
+import { styles } from '../../components/items/products/styles'
 
 export const Search = ({ navigation }) => {
-  let commentRef = useRef(null);
+  // let commentRef = useRef(null);
 
-  const theme = useSelector(selectedTheme);
+  // const theme = useSelector(selectedTheme);
   const userId = useSelector(currentUser);
   const { isLoggedIn } = useSelector(loggedInStatus);
   const [refreshing, setRefreshing] = useState(false);
@@ -37,10 +37,10 @@ export const Search = ({ navigation }) => {
     page,
   });
 
-  const isDark = theme === 'dark'
-  const color = isDark ? '#fff' : '#000'
+  // const isDark = theme === 'dark'
+  // const color = isDark ? '#fff' : '#000'
 
-  const currentDisplayedPost = data?.items?.filter(item => item?._id === currentPost?._id);
+  // const currentDisplayedPost = data?.items?.filter(item => item?._id === currentPost?._id);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -53,20 +53,6 @@ export const Search = ({ navigation }) => {
     }
   };
 
-  const sendComment = async () => {
-    if(!commentRef.current.value) {
-        alert('Please write a comment to post');
-        return;
-    }
-
-    await createReview({
-        rating: 0,
-        postID: currentPost._id,
-        comment: commentRef.current.value
-    });
-    commentRef.current.value = null;
-  }
-
   return (
     <CP.ThemeProvider>
       {/* <ToggleThemeButton /> */}
@@ -75,18 +61,18 @@ export const Search = ({ navigation }) => {
           <UI.View style={localStyles.container}>
               <CP.Debounce
                 onChange={(text) => setSearchTerm(text.trim())}
-                placeholderTextColor={color}
-                style={[localStyles.debounceStyle, { color, borderColor: color }]}
+                placeholderTextColor='#000'
+                // style={[localStyles.debounceStyle, { color: '#000', borderColor: '#000' }]}
                 placeholder="Search any posts here..."
                 delay={1250}
               />
           </UI.View>
 
-          {!searchTerm && 
+          {/* {!searchTerm && 
             <UI.View style={localStyles.searchLabel}>
               <UI.Text style={[localStyles.searchLabelFont, { color }]}>{displayMessage(searchTerm, data)}</UI.Text>
             </UI.View>
-          }
+          } */}
 
           <UI.FlatList
             numColumns={3}
@@ -117,37 +103,6 @@ export const Search = ({ navigation }) => {
         </>
         :
         <CP.Modal isVisible={isModalVisible} setModalVisible={setModalVisible} postID={currentPost?._id}>
-          <UI.View style={{ position: 'relative' }}>
-            <UI.View style={styles.postImageLayout}>
-                <UI.Image source={{ uri: postUser?.currentData?.user?.photo }} style={styles.modalImageSize} />
-                <UI.View style={{ justifyContent: 'center' }}>
-                    <UI.Text style={styles.userPostName}>{`${postUser?.currentData?.user?.firstname} ${postUser?.currentData?.user?.lastname}`}</UI.Text>
-                </UI.View>
-            </UI.View>
-            <UI.Image source={{ uri: currentPost?.photo }} style={[styles.postImage, styles.userPhoto]} />
-          </UI.View>
-
-          <UI.View style={localStyles.postDetail}>
-            <CP.PostActions data={currentDisplayedPost[0]} userId={userId} color={color} isLoggedIn={isLoggedIn} navigation={navigation} setModalVisible={setModalVisible} />
-            <CP.PostDetails data={currentDisplayedPost[0]} userId={userId} color={color} />
-          </UI.View>
-          
-          <UI.View style={styles.reviewsSectionLayout}>
-            <UI.View style={[styles.reviewsTitle, { backgroundColor: color }]} />
-              <UI.Text style={[styles.reviewsSection, { color }]}>Reviews</UI.Text>
-            <UI.View style={[styles.separation, { backgroundColor: color }]} />
-          </UI.View>
-
-          <UI.View style={styles.commentSection}>
-            <CP.PostComments isLoggedIn={isLoggedIn} loggedInUserPhoto={loggedInUserPhoto} commentRef={commentRef} color={color} infos={infos} sendComment={sendComment} />
-          </UI.View>
-
-          <UI.View style={{ marginTop: 10 }}>
-            {currentPost?.reviews?.map((review, i) => 
-              <CP.ReviewList review={review} key={i} color={color} />
-            )}
-          </UI.View>
-
         </CP.Modal>
       }
     </CP.ThemeProvider>

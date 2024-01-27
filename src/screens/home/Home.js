@@ -1,6 +1,6 @@
 import { FlatList, RefreshControl } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { ThemeProvider, PostItem } from '../../components';
+import { ThemeProvider, Product } from '../../components';
 import { useGetPostsQuery } from '../../redux/apiServices/postsApi';
 
 const Home = ({ navigation }) => {
@@ -40,7 +40,7 @@ const Home = ({ navigation }) => {
         <FlatList
           data={data?.items ?? []}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => <PostItem post={item} navigation={navigation} />}
+          renderItem={({ item }) => <Product post={item} navigation={navigation} />}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}

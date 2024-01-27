@@ -15,9 +15,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.project.my-gram",
+      "supportsTablet": true,
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLShemes": [
+              "com.googleusercontent.apps.860638338352-97lmjfppsp907ss6tjdtvil5tb90ov71"
+            ]
+          }
+        ]
+      }
     },
     "android": {
+      "package": "com.project.my-gram",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
