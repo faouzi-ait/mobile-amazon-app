@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 
 import { useSelector } from 'react-redux'
 import { selectedTheme } from '../../../redux/slices/selectors';
-import { useViewedPostMutation } from '../../../redux/apiServices/postsApi'
+import { useViewedPostMutation } from '../../../redux/apiServices/categoryApi'
 
 import { styles } from './styles'
 

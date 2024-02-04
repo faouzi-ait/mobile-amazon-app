@@ -23,7 +23,7 @@ const styles = UI.StyleSheet.create({
   },
   label: { 
     color: '#fff', 
-    fontSize: '18%', 
+    fontSize: 18, 
     marginBottom: '5%' 
   },
   buttons: { 

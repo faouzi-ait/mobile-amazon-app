@@ -3,14 +3,13 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import * as PER from 'redux-persist';
 
-import { uploadApi, apiSlice, apiMemo, apiPostListing } from './apiServices';
-import { counterReducer, themeReducer, authReducer } from './slices';
+import { uploadApi, apiSlice, apiCategory } from './apiServices';
+import { themeReducer, authReducer } from './slices';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   theme: themeReducer,
-  counter: counterReducer,
-  [apiPostListing.reducerPath]: apiPostListing.reducer,
+  [apiCategory.reducerPath]: apiCategory.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
@@ -31,7 +30,7 @@ export const store = configureStore({
     // serializableCheck: {
     //   ignoredActions: [PER.FLUSH, PER.REHYDRATE, PER.PAUSE, PER.PERSIST, PER.PURGE, PER.REGISTER],
     // },
-  }).concat([apiSlice.middleware, apiPostListing.middleware, uploadApi.middleware]),
+  }).concat([apiSlice.middleware, apiCategory.middleware, uploadApi.middleware]),
 });
 
 setupListeners(store.dispatch);

@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 
 import { Button, Loader } from '../../../components'; 
 
-import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
+import { useCreatePostMutation } from '../../../redux/apiServices/categoryApi';
 
 import * as MediaLibrary from 'expo-media-library';
 

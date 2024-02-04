@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { ThemeProvider, Button, Loader } from '../../../components'; 
 
-import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
+import { useCreatePostMutation } from '../../../redux/apiServices/categoryApi';
 
 import { compressedImage } from '../../../utils'
 

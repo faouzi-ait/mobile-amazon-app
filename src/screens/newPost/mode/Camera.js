@@ -7,7 +7,7 @@ import { Camera } from 'expo-camera';
 import { Ionicons } from "@expo/vector-icons";
 import { Loader, Button } from '../../../components'; 
 
-import { useCreatePostMutation } from '../../../redux/apiServices/postsApi';
+import { useCreatePostMutation } from '../../../redux/apiServices/categoryApi';
 
 import { compressedImage } from '../../../utils'
 

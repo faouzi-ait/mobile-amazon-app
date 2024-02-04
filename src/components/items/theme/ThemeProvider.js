@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 
 import { selectedTheme } from '../../../redux/slices/selectors';
 
@@ -9,10 +9,10 @@ const ThemeProvider = ({ children }) => {
   const theme = themeType === 'light' ? { background: '#1B1212' } : { background: '#ffffff' };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-      <StatusBar style={theme ? 'light' : 'dark'} />
+    <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
+      <StatusBar barStyle='dark-content' />
       {children}
-    </SafeAreaView>
+    </ScrollView>
   )};
 
 const styles = StyleSheet.create({

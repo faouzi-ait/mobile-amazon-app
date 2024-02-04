@@ -5,12 +5,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { setCredentials, setLogout } from '../slices/authSlice';
 
-import { BASE_API_URL } from '@env'
+import { BASE_API_URL, CURRENT_ENV } from '@env';
 
 const baseQuery = fetchBaseQuery({
     mode: "cors",
     credentials: 'include',
-    baseUrl: BASE_API_URL,
+    // baseUrl: BASE_API_URL,
+    baseUrl: 'http://localhost:4000/api/v1',
     extractRehydrationInfo(action, { reducerPath }) {
         if (action.type === REHYDRATE) {
             return action.payload[reducerPath]
@@ -37,7 +38,7 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
         const refreshToken = await AsyncStorage.getItem('refreshToken');
 
         if (refreshToken) {
-            const { data } = await axios.post(`${BASE_API_URL}/refresh-token`, {
+            const { data } = await axios.post(`${BASE_API_URL}/token/renewToken`, {
                 refreshToken,
             });
             
@@ -65,6 +66,6 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReAuth,
-    tagTypes: ['User', 'Images', 'Posts', 'Post', 'Search', 'Photo'],
+    tagTypes: ['categories', 'product', 'User'],
     endpoints: builder => ({}),
 });

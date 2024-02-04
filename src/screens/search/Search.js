@@ -7,14 +7,17 @@ import * as CP from '../../components';
 import { selectedTheme, currentUser, loggedInStatus } from '../../redux/slices/selectors';
 import { useGetUserPhotoQuery, useGetUserQuery } from '../../redux/apiServices/authApi';
 
-import * as api from '../../redux/apiServices/postsApi';
+import * as api from '../../redux/apiServices/categoryApi';
 
 // import { displayMessage } from '../../utils'
 
-import { styles } from '../../components/items/products/styles'
+import { styles } from '../../components/items/categories/styles'
 
-export const Search = ({ navigation }) => {
+export const Search = ({ navigation, route }) => {
+  const param = route?.params;
   // let commentRef = useRef(null);
+
+  console.log(param && param?.parameter);
 
   // const theme = useSelector(selectedTheme);
   const userId = useSelector(currentUser);
@@ -29,9 +32,9 @@ export const Search = ({ navigation }) => {
   const [currentPost, setCurrentPost] = useState(null)
   const postUser = useGetUserQuery(currentPost?.user);
 
-  const loggedInUserPhoto = useGetUserPhotoQuery(userId);
-  const [createReview, infos] = api.useCreateReviewMutation();
-  const { data, error, isLoading, refetch } = api.useGetPostsQuery({
+  // const loggedInUserPhoto = useGetUserPhotoQuery(userId);
+  // const [createReview, infos] = api.useCreateReviewMutation();
+  const { data, error, isLoading, refetch } = api.useGetCategoriesQuery({
     searchTerm,
     pageSize,
     page,
@@ -54,58 +57,19 @@ export const Search = ({ navigation }) => {
   };
 
   return (
-    <CP.ThemeProvider>
-      {/* <ToggleThemeButton /> */}
-      {!isModalVisible ? 
-        <>
-          <UI.View style={localStyles.container}>
-              <CP.Debounce
-                onChange={(text) => setSearchTerm(text.trim())}
-                placeholderTextColor='#000'
-                // style={[localStyles.debounceStyle, { color: '#000', borderColor: '#000' }]}
-                placeholder="Search any posts here..."
-                delay={1250}
-              />
-          </UI.View>
-
-          {/* {!searchTerm && 
-            <UI.View style={localStyles.searchLabel}>
-              <UI.Text style={[localStyles.searchLabelFont, { color }]}>{displayMessage(searchTerm, data)}</UI.Text>
-            </UI.View>
-          } */}
-
-          <UI.FlatList
-            numColumns={3}
-            data={data?.items}
-            refreshControl={
-              <UI.RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  colors={['lightgrey']}
-                  tintColor={'lightgrey'}
-              />
-            }
-            renderItem={({ item }) => (
-              <UI.TouchableOpacity
-                key={item._id}
-                style={localStyles.listStyle}
-                contentContainerStyle={{ padding: 5 }}
-                keyExtractor={(item) => item._id.toString()}
-                onPress={() => {
-                  setModalVisible(true);
-                  setCurrentPost(item);
-                }}>
-                <UI.Image style={localStyles.imageList} source={{ uri: item.photo }} />
-              </UI.TouchableOpacity>
-            )}
-
-          />
-        </>
-        :
-        <CP.Modal isVisible={isModalVisible} setModalVisible={setModalVisible} postID={currentPost?._id}>
-        </CP.Modal>
-      }
-    </CP.ThemeProvider>
+    <>
+      <CP.Header navigation={navigation} />
+      <CP.ThemeProvider>
+        {!isModalVisible ? 
+          <>
+            <UI.Text>LIST CATEGORIES IN VERTICAL LIST HERE</UI.Text>
+          </>
+          :
+          <CP.Modal isVisible={isModalVisible} setModalVisible={setModalVisible} postID={currentPost?._id}>
+          </CP.Modal>
+        }
+      </CP.ThemeProvider>
+    </>
   )
 }
 

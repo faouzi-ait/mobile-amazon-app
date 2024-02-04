@@ -1,5 +1,5 @@
 import { apiSlice } from '../apiBaseService/baseApiQuery';
 import { uploadApi } from './uploadApi';
-import { apiPostListing } from './postsApi';
+import { apiCategory } from './categoryApi';
 
-export { apiSlice, uploadApi, apiPostListing }
+export { apiSlice, uploadApi, apiCategory }
